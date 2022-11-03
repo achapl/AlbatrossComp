@@ -1,0 +1,26 @@
+rm -f albatrosscc lex.yy.c y.tab.c y.tab.h y.output *.o
+cc -Wall -Wextra -Werror -std=c17 -Wpedantic -O0  -g -c table.c
+cc -Wall -Wextra -Werror -std=c17 -Wpedantic -O0  -g -c symbol.c
+cc -Wall -Wextra -Werror -std=c17 -Wpedantic -O0  -g -c ast.c
+yacc -o y.tab.c -dv parser.y
+echo "y.tab.h was created at the same time as y.tab.c"
+y.tab.h was created at the same time as y.tab.c
+cc -Wall -Wextra -Werror -std=c17 -Wpedantic -O0  -g -c semantic_analysis_symbols.c
+cc -Wall -Wextra -Werror -std=c17 -Wpedantic -O0  -g -c main.c
+lex lexer.lex
+cc -O0  -g -c lex.yy.c
+cc -Wall -Wextra -Werror -std=c17 -Wpedantic -O0  -g -c y.tab.c
+cc -Wall -Wextra -Werror -std=c17 -Wpedantic -O0  -g -c semantic_analysis_types.c
+cc -Wall -Wextra -Werror -std=c17 -Wpedantic -O0  -g -c frames.c
+cc -Wall -Wextra -Werror -std=c17 -Wpedantic -O0  -g -c print_ast.c
+cc -Wall -Wextra -Werror -std=c17 -Wpedantic -O0  -g -c transform.c
+cc -Wall -Wextra -Werror -std=c17 -Wpedantic -O0  -g -c mips_ast.c
+cc -Wall -Wextra -Werror -std=c17 -Wpedantic -O0  -g -o albatrosscc main.o lex.yy.o y.tab.o symbol.o table.o ast.o semantic_analysis_types.o semantic_analysis_symbols.o frames.o print_ast.o transform.o mips_ast.o
+Running [42mpositive test[0m 01-simple/pass1.albatross	[42mCOMPILE OK in 125ms [0m	 [42mRUN OK in 735ms[0m	 [42mDIFF OK[0m	
+Running [42mpositive test[0m 01-simple/pass2.albatross	[42mCOMPILE OK in 81ms [0m	 [42mRUN OK in 709ms[0m	 [42mDIFF OK[0m	
+Running [42mpositive test[0m 01-simple/pass3.albatross	[42mCOMPILE OK in 127ms [0m	 [42mRUN OK in 737ms[0m	 [42mDIFF OK[0m	
+Running [42mpositive test[0m 01-simple/pass4.albatross	[42mCOMPILE OK in 108ms [0m	 [42mRUN OK in 737ms[0m	 [42mDIFF OK[0m	
+[42m                   TEST 01-simple PASSING                [0m
+[42m                   TEST 01-simple PASSING                [0m
+[42m                   TEST 01-simple PASSING                [0m
+Running [42mpositive test[0m 02-exprs/pass1.albatross	[42mCOMPILE OK in 94ms [0m	 [42mRUN OK in 531ms[0m	

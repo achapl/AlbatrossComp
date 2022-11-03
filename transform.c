@@ -74,15 +74,41 @@ void transformStmts(list * l, S_table globals_types, S_table function_rets, fram
                 break;
             }
             case while_stmt: {
+                // list * next = l->next;
+                // HINT : s->kind = if_stmt;
+                // l.next = // new ast node
+                // newASTNode->next = next;
                 break;
             }
             case repeat_stmt: {
                 break;
             }
             case ret_stmt: {
+                // if top level, (not in func), replace with intrinsic call "exit"
+                if (f == NULL) {
+                    exp_node * ret = s->data.ret_exp;
+                    s->kind = intrinsic_stmt;
+                    s->data.intrinsic_ops.name = "exit";
+                    s->data.intrinsic_ops.args = ListAddFirst(ret, NULL);
+                }
                 break;
             }
             case call_stmt: {
+                if (!strcmp("exit", s->data.call_ops.name)) {
+                    list * args = s->data.call_ops.args;
+                    char * name = s->data.call_ops.name; // name = "exit"
+                    s->kind = intrinsic_stmt;
+                    s->data.intrinsic_ops.name = name;
+                    s->data.intrinsic_ops.args = args;
+                }
+
+                if (!strcmp("printint", s->data.call_ops.name)) {
+                    list * args = s->data.call_ops.args;
+                    char * name = s->data.call_ops.name; // name = "printint"
+                    s->kind = intrinsic_stmt;
+                    s->data.intrinsic_ops.name = name;
+                    s->data.intrinsic_ops.args = args;
+                }
                 break;
             }
             default:

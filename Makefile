@@ -1,4 +1,4 @@
-SANITIZER=-O0 -fsanitize=address
+SANITIZER=-O0 #-fsanitize=address
 FLAGS=-Wall -Wextra -Werror -std=c17 -Wpedantic ${SANITIZER}
 
 albatrosscc: main.o lex.yy.o y.tab.o ast.o semantic_analysis_symbols.o semantic_analysis_types.o frames.o print_ast.o transform.o mips_ast.o

@@ -205,7 +205,25 @@ void symbolResolutionFunctions(list * l, S_table global_types, S_table function_
     symbolResolutionFunctions(l->next, global_types, function_ret_types, frames);
 }
 
+static void registerIntrinsics(S_table function_rets) {
+
+    fundec_node * f;
+    fundec_node * g;
+
+    f = FunDecNode("exit", VoidTyNode(), ListAddFirst(Param(IntTyNode(), "n"), NULL), NULL, NULL);
+    g = FunDecNode("printint", VoidTyNode(), ListAddFirst(Param(IntTyNode(), ""), NULL), NULL, NULL);
+
+    S_enter(function_rets, S_Symbol("exit"), f);
+    S_enter( function_rets, S_Symbol("printint"), g);
+
+
+
+}
+
 void symbolResolution(program * p, S_table global_types, S_table function_rets, S_table frames) {
+
+    registerIntrinsics(function_rets);
+
     global_empty_frame.args_locs_types = S_empty();
     global_empty_frame.indexes = S_empty();
 
