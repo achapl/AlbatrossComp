@@ -88,56 +88,183 @@ void mips_astExpr(exp_node * e, S_table global_types, S_table function_rets, fra
             if (e->data.bin_ops.op == plus_op) {
                 // Add the registers that correspond to each operand
                 emitInstruction("add $v0, $v0, $v1","BINOP_EXP PLUS_OP - Add the two operands");
-                // push result to top of stack
-
             } else if (e->data.bin_ops.op == minus_op) {
-                // Add the registers that correspond to each operand
                 emitInstruction("sub $v0, $v0, $v1","BINOP_EXP MINUS_OP - Subtract the two operands");
-                // push result to top of stack
-
             } else if (e->data.bin_ops.op == times_op) {
-                // Add the registers that correspond to each operand
                 emitInstruction("mul $v0, $v0, $v1","BINOP_EXP TIMES_OP - Multiply the two operands");
-                // push result to top of stack
-
             } else if (e->data.bin_ops.op == div_op) {
-                // Add the registers that correspond to each operand
                 emitInstruction("div $v0, $v0, $v1","BINOP_EXP DIV_OP - Divide the two operands");
-                // push result to top of stack
-
             } else if (e->data.bin_ops.op == rem_op) {
-                // Add the registers that correspond to each operand
                 emitInstruction("div $v0, $v0, $v1","BINOP_EXP REM_OP - Divide the two operands");
                 emitInstruction("mfhi $v0","BINOP_EXP REM_OP - Move remainder from register 'hi' to $v0");
-                // push result to top of stack
-
             } else if (e->data.bin_ops.op == bor_op) {
-                // Add the registers that correspond to each operand
                 emitInstruction("or $v0, $v0, $v1","BINOP_EXP BOR_OP - Or the two operands");
-                // push result to top of stack
-
             } else if (e->data.bin_ops.op == ban_op) {
-                // Add the registers that correspond to each operand
                 emitInstruction("and $v0, $v0, $v1","BINOP_EXP BAN_OP - And the two operands");
-                // push result to top of stack
-
             } else if (e->data.bin_ops.op == xor_op) {
-                // Add the registers that correspond to each operand
-                emitInstruction("xor $v0, $v0, $v1","BINOP_EXP BAN_OP - And the two operands");
+                emitInstruction("xor $v0, $v0, $v1",    "BINOP_EXP XOR_OP - And the two operands");
+            } else if (e->data.bin_ops.op == or_op) {
+                // Only go into both branches if equal to 0, since only 0 AND 0 will result in a 0
+                emitInstruction("bne $v0, $zero, OR_TRUE%d",    "BINOP_EXP OR_OP - Check if $v1 is zero", currJump);
+                emitInstruction("bne $v1, $zero, OR_TRUE%d",    "BINOP_EXP OR_OP - Check if $v1 is zero", currJump);
+                emitInstruction("li $v0, 0", "BINOP_EXP OR_OP - Or is false, both 0's");
+                emitInstruction("j OR_END%d", "BINOP_EXP OR_OP - Done with or op", currJump + 1);
+                emitLabel("OR_TRUE%d", "BINOP_EXP OR_OP - Jump here if OR op is true", currJump);
+                emitInstruction("li $v0, 1", "BINOP_EXP OR_OP - Or is true, neither is a 0");
+                emitLabel("OR_END%d", "BINOP_EXP OR_OP - Jump here if OR op is true", currJump + 1);
 
-                // push result to top of stack
+                currJump += 2; // 2 labels used in this block
+
+            } else if (e->data.bin_ops.op == and_op) {
+                // Only go into both branches if equal to 1, since only 1 AND 1 will result in a 1
+                emitInstruction("bne $v0, 1, AND_FALSE%d",    "BINOP_EXP AND_OP - Check if $v1 is zero", currJump);
+                emitInstruction("bne $v1, 1, AND_FALSE%d",    "BINOP_EXP AND_OP - Check if $v1 is zero", currJump);
+                emitInstruction("li $v0, 1", "BINOP_EXP AND_OP - And is true, both 1's");
+                emitInstruction("j AND_END%d", "BINOP_EXP AND_OP - Done with or op", currJump + 1);
+                emitLabel(          "AND_FALSE%d", "BINOP_EXP AND_OP - Jump here if OR op is true", currJump);
+                emitInstruction("li $v0, 0", "BINOP_EXP AND_OP - And is false, neither is a 1");
+                emitLabel(          "AND_END%d", "BINOP_EXP AND_OP - Jump here if OR op is true", currJump + 1);
+
+                currJump += 2; // 2 labels used in this block
+
+            }
+            else if (e->data.bin_ops.op == eq_op) {
+                // If eq_op evals to false, continue, and store 0 to $v0
+                // if true jump to EQ_OP_BNE and store 0 to $v0
+                emitInstruction("beq $v0, $v1, EQ_OP_BE%d","BINOP_EXP EQ_OP - Branch if equal", currJump);
+                emitInstruction("li $v0, 0",                "BINOP_EXP EQ_OP - Store 0 for false comparison");
+                // Once done wit this, jump over the "false" branch to EQ_OP_END
+                emitInstruction("j EQ_OP_END%d",              "BINOP_EXP EQ_OP - Done with equal expression if it is false. Go to end", currJump+1);
+
+                // If false, jump here, and store 0 to $v0
+                emitLabel(          "EQ_OP_BE%d",              "BINOP_EXP EQ_OP - Branch to here if not equal", currJump);
+                emitInstruction("li $v0, 1",            "BINOP_EXP EQ_OP - Store one for true comparison");
+                emitLabel(                "EQ_OP_END%d",          "BINOP_EXP EQ_OP - End from all branches here", currJump+1);
+
+                currJump += 2; // 2 labels used in this block
+
+            }
+            else if (e->data.bin_ops.op == ne_op) {
+                // If ne_op evals to false, continue, and store 0 to $v0
+                // if true jump to EQ_OP_BNE and store 1 to $v0
+                emitInstruction("bne $v0, $v1, EQ_OP_BNE%d","BINOP_EXP EQ_OP - Branch if equal", currJump);
+                emitInstruction("li $v0, 0",                "BINOP_EXP EQ_OP - Store 0 for false comparison");
+                // Once done wit this, jump over the "false" branch to EQ_OP_END
+                emitInstruction("j NE_OP_END%d",              "BINOP_EXP EQ_OP - Done with equal expression if it is false. Go to end", currJump+1);
+
+                // If false, jump here, and store 0 to $v0
+                emitLabel(          "EQ_OP_BNE%d",              "BINOP_EXP EQ_OP - Branch to here if not equal", currJump);
+                emitInstruction("li $v0, 1",            "BINOP_EXP EQ_OP - Store one for true comparison");
+                emitLabel(                "NE_OP_END%d",          "BINOP_EXP EQ_OP - End from all branches here", currJump+1);
+
+                currJump += 2; // 2 labels used in this block
+
+            }
+            else if (e->data.bin_ops.op == lt_op) {
+                // If lt_op evals to false, continue, and store 0 to $v0
+                // if true branch to LT_OP_TRUE and store 1 to $v0
+                emitInstruction("blt $v0, $v1, LT_OP_TRUE%d","BINOP_EXP LT_OP - Branch if LT", currJump);
+                emitInstruction("li $v0, 0",                 "BINOP_EXP LT_OP - Store 0 for false comparison");
+                // Once done with this, jump over the "true" branch to LT_OP_END
+                emitInstruction("j LT_OP_END%d",              "BINOP_EXP LT_OP - Done with LT expression if it is true, go to end", currJump+1);
+
+                // If true, jump here, and store 1 to $v0
+                emitLabel(          "LT_OP_TRUE%d",              "BINOP_EXP LT_OP - Branch to here if LT", currJump);
+                emitInstruction("li $v0, 1",                 "BINOP_EXP LT_OP - Store 1 for true comparison");
+
+                emitLabel(          "LT_OP_END%d",               "BINOP_EXP LT_OP - End from all branches here", currJump+1);
+
+                currJump += 2; // 2 labels used in this block
+
+            }
+            else if (e->data.bin_ops.op == gt_op) {
+                // If gt_op evals to false, continue, and store 0 to $v0
+                // if true branch to GT_OP_TRUE and store 1 to $v0
+                emitInstruction("bgt $v0, $v1, GT_OP_TRUE%d","BINOP_EXP GT_OP - Branch if GT", currJump);
+                emitInstruction("li $v0, 0",                 "BINOP_EXP GT_OP - Store 0 for false comparison");
+                // Once done with this, jump over the "true" branch to GT_OP_END
+                emitInstruction("j GT_OP_END%d",              "BINOP_EXP GT_OP - Done with GT expression if it is true, go to end", currJump+1);
+
+                // If true, jump here, and store 1 to $v0
+                emitLabel(          "GT_OP_TRUE%d",              "BINOP_EXP GT_OP - Branch to here if GT", currJump);
+                emitInstruction("li $v0, 1",                 "BINOP_EXP GT_OP - Store 1 for true comparison");
+
+                emitLabel(          "GT_OP_END%d",               "BINOP_EXP GT_OP - End from all branches here", currJump+1);
+
+                currJump += 2; // 2 labels used in this block
+
+            }
+            else if (e->data.bin_ops.op == le_op) {
+                // If le_op evals to false, continue, and store 0 to $v0
+                // if true branch to LE_OP_TRUE and store 1 to $v0
+                emitInstruction("ble $v0, $v1, LE_OP_TRUE%d","BINOP_EXP LE_OP - Branch if LE", currJump);
+                emitInstruction("li $v0, 0",                 "BINOP_EXP LE_OP - Store 0 for false comparison");
+                // Once done with this, jump over the "true" branch to LE_OP_END
+                emitInstruction("j LE_OP_END%d",              "BINOP_EXP LE_OP - Done with LE expression if it is true, go to end", currJump+1);
+
+                // If true, jump here, and store 1 to $v0
+                emitLabel(          "LE_OP_TRUE%d",              "BINOP_EXP LE_OP - Branch to here if LE", currJump);
+                emitInstruction("li $v0, 1",                 "BINOP_EXP LE_OP - Store 1 for true comparison");
+
+                emitLabel(          "LE_OP_END%d",               "BINOP_EXP LE_OP - End from all branches here", currJump+1);
+
+                currJump += 2; // 2 labels used in this block
+
+            }
+            else if (e->data.bin_ops.op == ge_op) {
+                // If lt_op evals to false, continue, and store 0 to $v0
+                // if true branch to GE_OP_TRUE and store 1 to $v0
+                emitInstruction("bge $v0, $v1, GE_OP_TRUE%d","BINOP_EXP GE_OP - Branch if GE", currJump);
+                emitInstruction("li $v0, 0",                 "BINOP_EXP GE_OP - Store 0 for false comparison");
+                // Once done with this, jump over the "true" branch to GE_OP_END
+                emitInstruction("j GE_OP_END%d",              "BINOP_EXP GE_OP - Done with GE expression if it is true, go to end", currJump+1);
+
+                // If true, jump here, and store 1 to $v0
+                emitLabel(          "GE_OP_TRUE%d",              "BINOP_EXP GE_OP - Branch to here if GE", currJump);
+                emitInstruction("li $v0, 1",                 "BINOP_EXP GE_OP - Store 1 for true comparison");
+
+                emitLabel(          "GE_OP_END%d",               "BINOP_EXP GE_OP - End from all branches here", currJump+1);
+
+                currJump += 2; // 2 labels used in this block
 
             }
 
-
+            // push result to top of stack
             push0();
             break;
         }
         case call_exp: {
             assert(0);
+            break;
         }
         case unop_exp: {
-            assert(0);
+            // Recursively evaluate each side of unnary operation
+            // Place result on the stack
+            mips_astExpr(e->data.un_ops.e, global_types, function_rets, f);
+            // store values on stack from recursive call into a register;
+            pop0();
+
+            if (e->data.un_ops.op == not_op) {
+                // Substitute A NOR $0 for NOT A
+                // Branch if NOT exp is true (i.e !0 = 1) and then set $v0 to 1 (true)
+                // Else, if not jumping, set $v0 to 0 (false)
+                emitInstruction("beq $v0, $zero, NOTEXP_TRUE%d","UNOP_EXP NOT_OP - Branch if NOT exp is true (i.e !0 = 1)", currJump);
+                emitInstruction("li $v0, 0",                 "UNOP_EXP NOT_OP - Store 0 for false comparison");
+                // Once done with this, jump over the "true" branch to NOT_OP_END
+                emitInstruction("j NOT_OP_END%d",              "UNOP_EXP NOT_OP - Done with GE expression if it is true, go to end", currJump+1);
+
+                // If true, jump here, and store 1 to $v0
+                emitLabel(          "NOTEXP_TRUE%d",              "UNOP_EXP NOT_OP - Branch to here if GE", currJump);
+                emitInstruction("li $v0, 1",                 "UNOP_EXP NOT_OP - Store 1 for true comparison");
+
+                emitLabel(          "NOT_OP_END%d",               "UNOP_EXP NOT_OP - End from all branches here", currJump+1);
+
+                currJump += 2; // 2 labels used in this block
+
+            }
+
+            push0();
+            break;
         }
         case var_exp: {
             assert(0);
