@@ -178,6 +178,7 @@ void mips_astStmt(stmt_node * s, S_table global_types, S_table function_rets, fr
             mips_astExpr(s->data.if_ops.cond, global_types, function_rets, f);
             // Get result of condition
             pop0();
+            emitInstruction("beq $v0, $zero, JFALSE%d", "Jump to to JFALSE if 'if' is false", jumpLabelNum);
             //TODO: Deal with label and jumping/branching
 
             // Do mips on statements inside of if

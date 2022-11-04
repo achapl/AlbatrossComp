@@ -131,6 +131,7 @@
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE0			# Jump to to JFALSE if 'if' is false
 		li $v0, 19			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -446,6 +447,7 @@
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE1			# Jump to to JFALSE if 'if' is false
 		li $v0, 134			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -453,6 +455,7 @@
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE2			# Jump to to JFALSE if 'if' is false
 		li $v0, 124			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -740,6 +743,7 @@
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE3			# Jump to to JFALSE if 'if' is false
 		li $v0, 121			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -915,6 +919,7 @@
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE4			# Jump to to JFALSE if 'if' is false
 		li $v0, 27			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -1735,6 +1740,7 @@ JFALSE0: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE5			# Jump to to JFALSE if 'if' is false
 		li $v0, 12			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -1966,6 +1972,7 @@ JFALSE0: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE6			# Jump to to JFALSE if 'if' is false
 		li $v0, 70			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -2211,6 +2218,7 @@ JFALSE0: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE7			# Jump to to JFALSE if 'if' is false
 		li $v0, 148			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -2470,6 +2478,7 @@ JFALSE0: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE8			# Jump to to JFALSE if 'if' is false
 		li $v0, 246			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -2603,6 +2612,7 @@ JFALSE0: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE9			# Jump to to JFALSE if 'if' is false
 		li $v0, 159			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -3101,6 +3111,7 @@ JFALSE5: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE10			# Jump to to JFALSE if 'if' is false
 		li $v0, 13			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -3360,6 +3371,7 @@ JFALSE5: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE11			# Jump to to JFALSE if 'if' is false
 		li $v0, 222			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -3689,6 +3701,7 @@ JFALSE5: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE12			# Jump to to JFALSE if 'if' is false
 		li $v0, 154			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -4032,6 +4045,7 @@ JFALSE5: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE13			# Jump to to JFALSE if 'if' is false
 		li $v0, 203			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -4165,6 +4179,7 @@ JFALSE5: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE14			# Jump to to JFALSE if 'if' is false
 		li $v0, 231			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -4775,6 +4790,7 @@ JFALSE10: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE15			# Jump to to JFALSE if 'if' is false
 		li $v0, 116			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -4894,6 +4910,7 @@ JFALSE10: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE16			# Jump to to JFALSE if 'if' is false
 		li $v0, 46			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -5209,6 +5226,7 @@ JFALSE10: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE17			# Jump to to JFALSE if 'if' is false
 		li $v0, 172			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -5384,6 +5402,7 @@ JFALSE10: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE18			# Jump to to JFALSE if 'if' is false
 		li $v0, 181			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -5727,6 +5746,7 @@ JFALSE10: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE19			# Jump to to JFALSE if 'if' is false
 		li $v0, 88			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -6547,6 +6567,7 @@ JFALSE15: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE20			# Jump to to JFALSE if 'if' is false
 		li $v0, 245			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -6918,6 +6939,7 @@ JFALSE15: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE21			# Jump to to JFALSE if 'if' is false
 		li $v0, 40			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -7261,6 +7283,7 @@ JFALSE15: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE22			# Jump to to JFALSE if 'if' is false
 		li $v0, 138			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -7576,6 +7599,7 @@ JFALSE15: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE23			# Jump to to JFALSE if 'if' is false
 		li $v0, 193			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -7989,6 +8013,7 @@ JFALSE15: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE24			# Jump to to JFALSE if 'if' is false
 		li $v0, 133			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -8599,6 +8624,7 @@ JFALSE20: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE25			# Jump to to JFALSE if 'if' is false
 		li $v0, 3			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -8872,6 +8898,7 @@ JFALSE20: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE26			# Jump to to JFALSE if 'if' is false
 		li $v0, 18			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -9285,6 +9312,7 @@ JFALSE20: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE27			# Jump to to JFALSE if 'if' is false
 		li $v0, 224			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -9684,6 +9712,7 @@ JFALSE20: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE28			# Jump to to JFALSE if 'if' is false
 		li $v0, 130			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -9957,6 +9986,7 @@ JFALSE20: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE29			# Jump to to JFALSE if 'if' is false
 		li $v0, 228			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -10231,6 +10261,7 @@ JFALSE25: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE30			# Jump to to JFALSE if 'if' is false
 		li $v0, 35			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -10672,6 +10703,7 @@ JFALSE25: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE31			# Jump to to JFALSE if 'if' is false
 		li $v0, 95			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -11099,6 +11131,7 @@ JFALSE25: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE32			# Jump to to JFALSE if 'if' is false
 		li $v0, 168			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -11400,6 +11433,7 @@ JFALSE25: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE33			# Jump to to JFALSE if 'if' is false
 		li $v0, 239			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -11729,6 +11763,7 @@ JFALSE25: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE34			# Jump to to JFALSE if 'if' is false
 		li $v0, 73			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -12283,6 +12318,7 @@ JFALSE30: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE35			# Jump to to JFALSE if 'if' is false
 		li $v0, 227			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -12682,6 +12718,7 @@ JFALSE30: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE36			# Jump to to JFALSE if 'if' is false
 		li $v0, 107			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -12773,6 +12810,7 @@ JFALSE30: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE37			# Jump to to JFALSE if 'if' is false
 		li $v0, 133			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -13158,6 +13196,7 @@ JFALSE30: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE38			# Jump to to JFALSE if 'if' is false
 		li $v0, 73			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -13165,6 +13204,7 @@ JFALSE30: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE39			# Jump to to JFALSE if 'if' is false
 		li $v0, 173			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -13873,6 +13913,7 @@ JFALSE35: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE40			# Jump to to JFALSE if 'if' is false
 		li $v0, 95			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -14174,6 +14215,7 @@ JFALSE35: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE41			# Jump to to JFALSE if 'if' is false
 		li $v0, 199			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -14517,6 +14559,7 @@ JFALSE35: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE42			# Jump to to JFALSE if 'if' is false
 		li $v0, 16			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -14692,6 +14735,7 @@ JFALSE35: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE43			# Jump to to JFALSE if 'if' is false
 		li $v0, 164			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -14937,6 +14981,7 @@ JFALSE35: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE44			# Jump to to JFALSE if 'if' is false
 		li $v0, 190			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -15617,6 +15662,7 @@ JFALSE40: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE45			# Jump to to JFALSE if 'if' is false
 		li $v0, 136			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -15960,6 +16006,7 @@ JFALSE40: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE46			# Jump to to JFALSE if 'if' is false
 		li $v0, 181			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -15981,6 +16028,7 @@ JFALSE40: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE47			# Jump to to JFALSE if 'if' is false
 		li $v0, 172			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -15988,6 +16036,7 @@ JFALSE40: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE48			# Jump to to JFALSE if 'if' is false
 		li $v0, 90			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -16303,6 +16352,7 @@ JFALSE40: # Jump to here if 'if' is false
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE49			# Jump to to JFALSE if 'if' is false
 		li $v0, 0			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
