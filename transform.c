@@ -24,7 +24,7 @@ void transformExpr(exp_node * e, S_table global_types, S_table function_rets, fr
     UNUSED(function_rets);
     UNUSED(f);
     if(!e) return;
-    switch(e->kind){
+    switch(e->kind) {
         case int_exp: {
             break;
         }
@@ -46,6 +46,7 @@ void transformExpr(exp_node * e, S_table global_types, S_table function_rets, fr
             break;
         }
         case call_exp: {
+            printf("HERE4!");
             break;
         }
         case unop_exp: {
@@ -71,6 +72,8 @@ void transformStmts(list * l, S_table globals_types, S_table function_rets, fram
                 break;
             }
             case if_stmt: {
+                transformStmts(s->data.if_ops.then_stmts, globals_types, function_rets, f);
+                transformStmts(s->data.if_ops.else_stmts, globals_types, function_rets, f);
                 break;
             }
             case while_stmt: {
@@ -144,7 +147,6 @@ void transformFunctions(list * l, S_table global_types, S_table function_ret_typ
 }
 
 void transform(program * p, S_table global_types, S_table function_rets, S_table frames) {
-
     transformVariables(p->variables, global_types, function_rets, NULL);
     transformFunctions(p->functions, global_types, function_rets, frames);
     transformStmts(p->statements, global_types, function_rets, NULL);

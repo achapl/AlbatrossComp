@@ -10,6 +10,8 @@
 #include "mips_ast.h"
 #include "util.h"
 
+static int currJump = 0;
+
 static FILE * out;
 
 // Push frpm register v0
@@ -75,20 +77,61 @@ void mips_astExpr(exp_node * e, S_table global_types, S_table function_rets, fra
             assert(0);
         }
         case binop_exp: {
-            if (e->data.bin_ops.op == plus_op) {
-                mips_astExpr(e->data.bin_ops.e1, global_types, function_rets, f);
-                // store value on stack from above recursive call into a register;
-                mips_astExpr(e->data.bin_ops.e2, global_types, function_rets, f);
-                pop0();
-                pop1();
+            // Recursively evaluate each side of binary operation
+            // Place result on the stack
+            mips_astExpr(e->data.bin_ops.e1, global_types, function_rets, f);
+            mips_astExpr(e->data.bin_ops.e2, global_types, function_rets, f);
+            // store values on stack from recursive call into a register;
+            pop1();
+            pop0();
 
+            if (e->data.bin_ops.op == plus_op) {
+                // Add the registers that correspond to each operand
                 emitInstruction("add $v0, $v0, $v1","BINOP_EXP PLUS_OP - Add the two operands");
                 // push result to top of stack
-                push0();
 
-                return;
+            } else if (e->data.bin_ops.op == minus_op) {
+                // Add the registers that correspond to each operand
+                emitInstruction("sub $v0, $v0, $v1","BINOP_EXP MINUS_OP - Subtract the two operands");
+                // push result to top of stack
+
+            } else if (e->data.bin_ops.op == times_op) {
+                // Add the registers that correspond to each operand
+                emitInstruction("mul $v0, $v0, $v1","BINOP_EXP TIMES_OP - Multiply the two operands");
+                // push result to top of stack
+
+            } else if (e->data.bin_ops.op == div_op) {
+                // Add the registers that correspond to each operand
+                emitInstruction("div $v0, $v0, $v1","BINOP_EXP DIV_OP - Divide the two operands");
+                // push result to top of stack
+
+            } else if (e->data.bin_ops.op == rem_op) {
+                // Add the registers that correspond to each operand
+                emitInstruction("div $v0, $v0, $v1","BINOP_EXP REM_OP - Divide the two operands");
+                emitInstruction("mfhi $v0","BINOP_EXP REM_OP - Move remainder from register 'hi' to $v0");
+                // push result to top of stack
+
+            } else if (e->data.bin_ops.op == bor_op) {
+                // Add the registers that correspond to each operand
+                emitInstruction("or $v0, $v0, $v1","BINOP_EXP BOR_OP - Or the two operands");
+                // push result to top of stack
+
+            } else if (e->data.bin_ops.op == ban_op) {
+                // Add the registers that correspond to each operand
+                emitInstruction("and $v0, $v0, $v1","BINOP_EXP BAN_OP - And the two operands");
+                // push result to top of stack
+
+            } else if (e->data.bin_ops.op == xor_op) {
+                // Add the registers that correspond to each operand
+                emitInstruction("xor $v0, $v0, $v1","BINOP_EXP BAN_OP - And the two operands");
+
+                // push result to top of stack
+
             }
-            assert(0);
+
+
+            push0();
+            break;
         }
         case call_exp: {
             assert(0);
@@ -130,7 +173,18 @@ void mips_astStmt(stmt_node * s, S_table global_types, S_table function_rets, fr
             assert(0);
         }
         case if_stmt: {
-            assert(0);
+            int jumpLabelNum = currJump++;
+            // Do mips on condition
+            mips_astExpr(s->data.if_ops.cond, global_types, function_rets, f);
+            // Get result of condition
+            pop0();
+            //TODO: Deal with label and jumping/branching
+
+            // Do mips on statements inside of if
+            mips_astStmts(s->data.if_ops.then_stmts, global_types, function_rets, f);
+            // Label for skipping last if
+            emitLabel("JFALSE%d", "Jump to here if 'if' is false", jumpLabelNum);
+            break;
         }
         case while_stmt: {
             assert(0);
@@ -143,6 +197,7 @@ void mips_astStmt(stmt_node * s, S_table global_types, S_table function_rets, fr
         }
         case call_stmt: {
             assert(0);
+            break;
         }
         case intrinsic_stmt: {
              intrinsic(s->data.intrinsic_ops.name, s->data.intrinsic_ops.args, global_types, function_rets, f);
