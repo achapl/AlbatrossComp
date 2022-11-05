@@ -267,7 +267,9 @@ void mips_astExpr(exp_node * e, S_table global_types, S_table function_rets, fra
             break;
         }
         case var_exp: {
-            assert(0);
+            emitInstruction("lw $v0, %s", "VAR_EXP - Load variable value", e->data.var_ops.name);
+            push0();
+            break;
         }
         case intrinsic_exp: {
             intrinsic(e->data.intrinsic_ops.name, e->data.intrinsic_ops.args, global_types, function_rets, f);
@@ -297,7 +299,10 @@ void mips_astStmt(stmt_node * s, S_table global_types, S_table function_rets, fr
     if(!s) return;
     switch(s->kind){
         case assign_stmt: {
-            assert(0);
+            mips_astExpr(s->data.assign_ops.rhs, global_types, function_rets, f);
+            pop0();
+            emitInstruction("sw $v0, %s", "ASSIGN_STMT - store $v0 on top of stack", s->data.assign_ops.lhs);
+            break;
         }
         case if_stmt: {
             int jumpLabelNum = currJump++;
@@ -305,7 +310,7 @@ void mips_astStmt(stmt_node * s, S_table global_types, S_table function_rets, fr
             mips_astExpr(s->data.if_ops.cond, global_types, function_rets, f);
             // Get result of condition
             pop0();
-            emitInstruction("beq $v0, $zero, JFALSE%d", "Jump to to JFALSE if 'if' is false", jumpLabelNum);
+            emitInstruction("beq $v0, $zero, JFALSE%d", "IF_STMT - Jump to to JFALSE if 'if' is false", jumpLabelNum);
             //TODO: Deal with label and jumping/branching
 
             // Do mips on statements inside of if
@@ -343,12 +348,33 @@ void mips_astStmts(list * l, S_table globals_types, S_table function_rets, frame
 }
 
 void mips_astVariable(vardec_node * node, S_table globals_types, S_table function_rets, frame * f) {
-    mips_astExpr(node->init, globals_types, function_rets, f);
+    UNUSED(globals_types);
+    UNUSED(function_rets);
+    // If scope is global
+    if (f == NULL) {
+        // Check that it is already in global scope
+        char *ty = typeToStr(node->type);
+        char *size;
+        assert(ty != NULL);
+        if (strcmp(ty, "int") == 0) {
+            size = "word";
+        } else if (strcmp(ty, "string") == 0) {
+            size = "asciiz";
+        }
+
+        if (strcmp(ty, "int") == 0) {
+            emitInstruction("%s:    .%s     %d", "Variable declaration for var %s", node->name, size, node->init->data.ival);
+        } else if (strcmp(ty, "string") == 0) {
+            emitInstruction("%s:    .%s     \"%s\"", "Variable declaration for var %s", node->name, size, node->init->data.sval);
+        }
+    }
+
+
 }
 
 void mips_astVariables(list * l, S_table global_types, S_table function_rets, frame * f) {
     if (l == NULL) return;
-    fprintf(out, ".data\n");
+
     mips_astVariable((vardec_node *)l->head, global_types, function_rets, f);
     mips_astVariables(l->next, global_types, function_rets, f);
 }
@@ -438,7 +464,14 @@ void mips_ast(program * p, S_table global_types, S_table function_rets, S_table 
     UNUSED(pop0);
     UNUSED(pop1);
 
+    if (p->variables != NULL) {
+        fprintf(out, ".data\n");
+    }
     mips_astVariables(p->variables, global_types, function_rets, NULL);
+
     mips_astFunctions(p->functions, global_types, function_rets, frames);
+    if (p->statements != NULL) {
+        fprintf(out, ".text\n");
+    }
     mips_astStmts(p->statements, global_types, function_rets, NULL);
 }
