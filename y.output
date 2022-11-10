@@ -5,16 +5,16 @@ Grammar
     1 program: vars funcs stmts
 
     2 vars: vars var
-    3     | Îµ
+    3     | %empty
 
     4 var: VAR NAME TYPE ASSIGN exp SEMICOLON
 
     5 funcs: funcs func
-    6      | Îµ
+    6      | %empty
 
     7 func: FUN NAME TYPE LPAREN argdecls RPAREN LCURL vars stmts RCURL
 
-    8 argdecls: Îµ
+    8 argdecls: %empty
     9         | argdecl
    10         | argdecl COMMA argdecls
 
@@ -58,7 +58,7 @@ Grammar
 
    45 exps: exp COMMA exps
    46     | exp
-   47     | Îµ
+   47     | %empty
 
 
 Terminals, with rules where they appear
@@ -144,7 +144,7 @@ Nonterminals, with rules where they appear
 
 State 0
 
-    0 $accept: â€¢ program $end
+    0 $accept: • program $end
 
     $default  reduce using rule 3 (vars)
 
@@ -154,15 +154,15 @@ State 0
 
 State 1
 
-    0 $accept: program â€¢ $end
+    0 $accept: program • $end
 
     $end  shift, and go to state 3
 
 
 State 2
 
-    1 program: vars â€¢ funcs stmts
-    2 vars: vars â€¢ var
+    1 program: vars • funcs stmts
+    2 vars: vars • var
 
     VAR  shift, and go to state 4
 
@@ -174,29 +174,29 @@ State 2
 
 State 3
 
-    0 $accept: program $end â€¢
+    0 $accept: program $end •
 
     $default  accept
 
 
 State 4
 
-    4 var: VAR â€¢ NAME TYPE ASSIGN exp SEMICOLON
+    4 var: VAR • NAME TYPE ASSIGN exp SEMICOLON
 
     NAME  shift, and go to state 7
 
 
 State 5
 
-    2 vars: vars var â€¢
+    2 vars: vars var •
 
     $default  reduce using rule 2 (vars)
 
 
 State 6
 
-    1 program: vars funcs â€¢ stmts
-    5 funcs: funcs â€¢ func
+    1 program: vars funcs • stmts
+    5 funcs: funcs • func
 
     NAME    shift, and go to state 8
     RETURN  shift, and go to state 9
@@ -212,15 +212,15 @@ State 6
 
 State 7
 
-    4 var: VAR NAME â€¢ TYPE ASSIGN exp SEMICOLON
+    4 var: VAR NAME • TYPE ASSIGN exp SEMICOLON
 
     TYPE  shift, and go to state 17
 
 
 State 8
 
-   21 stmt: NAME â€¢ ASSIGN exp SEMICOLON
-   22     | NAME â€¢ LPAREN exps RPAREN SEMICOLON
+   21 stmt: NAME • ASSIGN exp SEMICOLON
+   22     | NAME • LPAREN exps RPAREN SEMICOLON
 
     LPAREN  shift, and go to state 18
     ASSIGN  shift, and go to state 19
@@ -228,8 +228,8 @@ State 8
 
 State 9
 
-   14 stmt: RETURN â€¢ exp SEMICOLON
-   15     | RETURN â€¢ SEMICOLON
+   14 stmt: RETURN • exp SEMICOLON
+   15     | RETURN • SEMICOLON
 
     STRING     shift, and go to state 20
     NAME       shift, and go to state 21
@@ -243,45 +243,45 @@ State 9
 
 State 10
 
-   16 stmt: IF â€¢ LPAREN exp RPAREN LCURL stmts RCURL
-   17     | IF â€¢ LPAREN exp RPAREN LCURL stmts RCURL ELSE LCURL stmts RCURL
+   16 stmt: IF • LPAREN exp RPAREN LCURL stmts RCURL
+   17     | IF • LPAREN exp RPAREN LCURL stmts RCURL ELSE LCURL stmts RCURL
 
     LPAREN  shift, and go to state 27
 
 
 State 11
 
-   18 stmt: WHILE â€¢ LPAREN exp RPAREN LCURL stmts RCURL
-   19     | WHILE â€¢ LPAREN exp RPAREN LCURL stmts RCURL OTHERWISE LCURL stmts RCURL
+   18 stmt: WHILE • LPAREN exp RPAREN LCURL stmts RCURL
+   19     | WHILE • LPAREN exp RPAREN LCURL stmts RCURL OTHERWISE LCURL stmts RCURL
 
     LPAREN  shift, and go to state 28
 
 
 State 12
 
-   20 stmt: REPEAT â€¢ LPAREN exp RPAREN LCURL stmts RCURL
+   20 stmt: REPEAT • LPAREN exp RPAREN LCURL stmts RCURL
 
     LPAREN  shift, and go to state 29
 
 
 State 13
 
-    7 func: FUN â€¢ NAME TYPE LPAREN argdecls RPAREN LCURL vars stmts RCURL
+    7 func: FUN • NAME TYPE LPAREN argdecls RPAREN LCURL vars stmts RCURL
 
     NAME  shift, and go to state 30
 
 
 State 14
 
-    5 funcs: funcs func â€¢
+    5 funcs: funcs func •
 
     $default  reduce using rule 5 (funcs)
 
 
 State 15
 
-    1 program: vars funcs stmts â€¢
-   12 stmts: stmts â€¢ stmt
+    1 program: vars funcs stmts •
+   12 stmts: stmts • stmt
 
     NAME    shift, and go to state 8
     RETURN  shift, and go to state 9
@@ -296,21 +296,21 @@ State 15
 
 State 16
 
-   13 stmts: stmt â€¢
+   13 stmts: stmt •
 
     $default  reduce using rule 13 (stmts)
 
 
 State 17
 
-    4 var: VAR NAME TYPE â€¢ ASSIGN exp SEMICOLON
+    4 var: VAR NAME TYPE • ASSIGN exp SEMICOLON
 
     ASSIGN  shift, and go to state 32
 
 
 State 18
 
-   22 stmt: NAME LPAREN â€¢ exps RPAREN SEMICOLON
+   22 stmt: NAME LPAREN • exps RPAREN SEMICOLON
 
     STRING  shift, and go to state 20
     NAME    shift, and go to state 21
@@ -326,7 +326,7 @@ State 18
 
 State 19
 
-   21 stmt: NAME ASSIGN â€¢ exp SEMICOLON
+   21 stmt: NAME ASSIGN • exp SEMICOLON
 
     STRING  shift, and go to state 20
     NAME    shift, and go to state 21
@@ -339,15 +339,15 @@ State 19
 
 State 20
 
-   25 exp: STRING â€¢
+   25 exp: STRING •
 
     $default  reduce using rule 25 (exp)
 
 
 State 21
 
-   24 exp: NAME â€¢
-   27    | NAME â€¢ LPAREN exps RPAREN
+   24 exp: NAME •
+   27    | NAME • LPAREN exps RPAREN
 
     LPAREN  shift, and go to state 36
 
@@ -356,21 +356,21 @@ State 21
 
 State 22
 
-   23 exp: INT â€¢
+   23 exp: INT •
 
     $default  reduce using rule 23 (exp)
 
 
 State 23
 
-   15 stmt: RETURN SEMICOLON â€¢
+   15 stmt: RETURN SEMICOLON •
 
     $default  reduce using rule 15 (stmt)
 
 
 State 24
 
-   26 exp: LPAREN â€¢ exp RPAREN
+   26 exp: LPAREN • exp RPAREN
 
     STRING  shift, and go to state 20
     NAME    shift, and go to state 21
@@ -383,7 +383,7 @@ State 24
 
 State 25
 
-   44 exp: OP_NOT â€¢ exp
+   44 exp: OP_NOT • exp
 
     STRING  shift, and go to state 20
     NAME    shift, and go to state 21
@@ -396,23 +396,23 @@ State 25
 
 State 26
 
-   14 stmt: RETURN exp â€¢ SEMICOLON
-   28 exp: exp â€¢ OP_PLUS exp
-   29    | exp â€¢ OP_MINUS exp
-   30    | exp â€¢ OP_TIMES exp
-   31    | exp â€¢ OP_DIV exp
-   32    | exp â€¢ OP_REM exp
-   33    | exp â€¢ OP_BOR exp
-   34    | exp â€¢ OP_BAND exp
-   35    | exp â€¢ OP_XOR exp
-   36    | exp â€¢ OP_AND exp
-   37    | exp â€¢ OP_OR exp
-   38    | exp â€¢ OP_EQ exp
-   39    | exp â€¢ OP_NE exp
-   40    | exp â€¢ OP_LT exp
-   41    | exp â€¢ OP_GT exp
-   42    | exp â€¢ OP_LE exp
-   43    | exp â€¢ OP_GE exp
+   14 stmt: RETURN exp • SEMICOLON
+   28 exp: exp • OP_PLUS exp
+   29    | exp • OP_MINUS exp
+   30    | exp • OP_TIMES exp
+   31    | exp • OP_DIV exp
+   32    | exp • OP_REM exp
+   33    | exp • OP_BOR exp
+   34    | exp • OP_BAND exp
+   35    | exp • OP_XOR exp
+   36    | exp • OP_AND exp
+   37    | exp • OP_OR exp
+   38    | exp • OP_EQ exp
+   39    | exp • OP_NE exp
+   40    | exp • OP_LT exp
+   41    | exp • OP_GT exp
+   42    | exp • OP_LE exp
+   43    | exp • OP_GE exp
 
     SEMICOLON  shift, and go to state 39
     OP_OR      shift, and go to state 40
@@ -435,8 +435,8 @@ State 26
 
 State 27
 
-   16 stmt: IF LPAREN â€¢ exp RPAREN LCURL stmts RCURL
-   17     | IF LPAREN â€¢ exp RPAREN LCURL stmts RCURL ELSE LCURL stmts RCURL
+   16 stmt: IF LPAREN • exp RPAREN LCURL stmts RCURL
+   17     | IF LPAREN • exp RPAREN LCURL stmts RCURL ELSE LCURL stmts RCURL
 
     STRING  shift, and go to state 20
     NAME    shift, and go to state 21
@@ -449,8 +449,8 @@ State 27
 
 State 28
 
-   18 stmt: WHILE LPAREN â€¢ exp RPAREN LCURL stmts RCURL
-   19     | WHILE LPAREN â€¢ exp RPAREN LCURL stmts RCURL OTHERWISE LCURL stmts RCURL
+   18 stmt: WHILE LPAREN • exp RPAREN LCURL stmts RCURL
+   19     | WHILE LPAREN • exp RPAREN LCURL stmts RCURL OTHERWISE LCURL stmts RCURL
 
     STRING  shift, and go to state 20
     NAME    shift, and go to state 21
@@ -463,7 +463,7 @@ State 28
 
 State 29
 
-   20 stmt: REPEAT LPAREN â€¢ exp RPAREN LCURL stmts RCURL
+   20 stmt: REPEAT LPAREN • exp RPAREN LCURL stmts RCURL
 
     STRING  shift, and go to state 20
     NAME    shift, and go to state 21
@@ -476,21 +476,21 @@ State 29
 
 State 30
 
-    7 func: FUN NAME â€¢ TYPE LPAREN argdecls RPAREN LCURL vars stmts RCURL
+    7 func: FUN NAME • TYPE LPAREN argdecls RPAREN LCURL vars stmts RCURL
 
     TYPE  shift, and go to state 59
 
 
 State 31
 
-   12 stmts: stmts stmt â€¢
+   12 stmts: stmts stmt •
 
     $default  reduce using rule 12 (stmts)
 
 
 State 32
 
-    4 var: VAR NAME TYPE ASSIGN â€¢ exp SEMICOLON
+    4 var: VAR NAME TYPE ASSIGN • exp SEMICOLON
 
     STRING  shift, and go to state 20
     NAME    shift, and go to state 21
@@ -503,24 +503,24 @@ State 32
 
 State 33
 
-   28 exp: exp â€¢ OP_PLUS exp
-   29    | exp â€¢ OP_MINUS exp
-   30    | exp â€¢ OP_TIMES exp
-   31    | exp â€¢ OP_DIV exp
-   32    | exp â€¢ OP_REM exp
-   33    | exp â€¢ OP_BOR exp
-   34    | exp â€¢ OP_BAND exp
-   35    | exp â€¢ OP_XOR exp
-   36    | exp â€¢ OP_AND exp
-   37    | exp â€¢ OP_OR exp
-   38    | exp â€¢ OP_EQ exp
-   39    | exp â€¢ OP_NE exp
-   40    | exp â€¢ OP_LT exp
-   41    | exp â€¢ OP_GT exp
-   42    | exp â€¢ OP_LE exp
-   43    | exp â€¢ OP_GE exp
-   45 exps: exp â€¢ COMMA exps
-   46     | exp â€¢
+   28 exp: exp • OP_PLUS exp
+   29    | exp • OP_MINUS exp
+   30    | exp • OP_TIMES exp
+   31    | exp • OP_DIV exp
+   32    | exp • OP_REM exp
+   33    | exp • OP_BOR exp
+   34    | exp • OP_BAND exp
+   35    | exp • OP_XOR exp
+   36    | exp • OP_AND exp
+   37    | exp • OP_OR exp
+   38    | exp • OP_EQ exp
+   39    | exp • OP_NE exp
+   40    | exp • OP_LT exp
+   41    | exp • OP_GT exp
+   42    | exp • OP_LE exp
+   43    | exp • OP_GE exp
+   45 exps: exp • COMMA exps
+   46     | exp •
 
     COMMA     shift, and go to state 61
     OP_OR     shift, and go to state 40
@@ -545,30 +545,30 @@ State 33
 
 State 34
 
-   22 stmt: NAME LPAREN exps â€¢ RPAREN SEMICOLON
+   22 stmt: NAME LPAREN exps • RPAREN SEMICOLON
 
     RPAREN  shift, and go to state 62
 
 
 State 35
 
-   21 stmt: NAME ASSIGN exp â€¢ SEMICOLON
-   28 exp: exp â€¢ OP_PLUS exp
-   29    | exp â€¢ OP_MINUS exp
-   30    | exp â€¢ OP_TIMES exp
-   31    | exp â€¢ OP_DIV exp
-   32    | exp â€¢ OP_REM exp
-   33    | exp â€¢ OP_BOR exp
-   34    | exp â€¢ OP_BAND exp
-   35    | exp â€¢ OP_XOR exp
-   36    | exp â€¢ OP_AND exp
-   37    | exp â€¢ OP_OR exp
-   38    | exp â€¢ OP_EQ exp
-   39    | exp â€¢ OP_NE exp
-   40    | exp â€¢ OP_LT exp
-   41    | exp â€¢ OP_GT exp
-   42    | exp â€¢ OP_LE exp
-   43    | exp â€¢ OP_GE exp
+   21 stmt: NAME ASSIGN exp • SEMICOLON
+   28 exp: exp • OP_PLUS exp
+   29    | exp • OP_MINUS exp
+   30    | exp • OP_TIMES exp
+   31    | exp • OP_DIV exp
+   32    | exp • OP_REM exp
+   33    | exp • OP_BOR exp
+   34    | exp • OP_BAND exp
+   35    | exp • OP_XOR exp
+   36    | exp • OP_AND exp
+   37    | exp • OP_OR exp
+   38    | exp • OP_EQ exp
+   39    | exp • OP_NE exp
+   40    | exp • OP_LT exp
+   41    | exp • OP_GT exp
+   42    | exp • OP_LE exp
+   43    | exp • OP_GE exp
 
     SEMICOLON  shift, and go to state 63
     OP_OR      shift, and go to state 40
@@ -591,7 +591,7 @@ State 35
 
 State 36
 
-   27 exp: NAME LPAREN â€¢ exps RPAREN
+   27 exp: NAME LPAREN • exps RPAREN
 
     STRING  shift, and go to state 20
     NAME    shift, and go to state 21
@@ -607,23 +607,23 @@ State 36
 
 State 37
 
-   26 exp: LPAREN exp â€¢ RPAREN
-   28    | exp â€¢ OP_PLUS exp
-   29    | exp â€¢ OP_MINUS exp
-   30    | exp â€¢ OP_TIMES exp
-   31    | exp â€¢ OP_DIV exp
-   32    | exp â€¢ OP_REM exp
-   33    | exp â€¢ OP_BOR exp
-   34    | exp â€¢ OP_BAND exp
-   35    | exp â€¢ OP_XOR exp
-   36    | exp â€¢ OP_AND exp
-   37    | exp â€¢ OP_OR exp
-   38    | exp â€¢ OP_EQ exp
-   39    | exp â€¢ OP_NE exp
-   40    | exp â€¢ OP_LT exp
-   41    | exp â€¢ OP_GT exp
-   42    | exp â€¢ OP_LE exp
-   43    | exp â€¢ OP_GE exp
+   26 exp: LPAREN exp • RPAREN
+   28    | exp • OP_PLUS exp
+   29    | exp • OP_MINUS exp
+   30    | exp • OP_TIMES exp
+   31    | exp • OP_DIV exp
+   32    | exp • OP_REM exp
+   33    | exp • OP_BOR exp
+   34    | exp • OP_BAND exp
+   35    | exp • OP_XOR exp
+   36    | exp • OP_AND exp
+   37    | exp • OP_OR exp
+   38    | exp • OP_EQ exp
+   39    | exp • OP_NE exp
+   40    | exp • OP_LT exp
+   41    | exp • OP_GT exp
+   42    | exp • OP_LE exp
+   43    | exp • OP_GE exp
 
     RPAREN    shift, and go to state 65
     OP_OR     shift, and go to state 40
@@ -646,37 +646,37 @@ State 37
 
 State 38
 
-   28 exp: exp â€¢ OP_PLUS exp
-   29    | exp â€¢ OP_MINUS exp
-   30    | exp â€¢ OP_TIMES exp
-   31    | exp â€¢ OP_DIV exp
-   32    | exp â€¢ OP_REM exp
-   33    | exp â€¢ OP_BOR exp
-   34    | exp â€¢ OP_BAND exp
-   35    | exp â€¢ OP_XOR exp
-   36    | exp â€¢ OP_AND exp
-   37    | exp â€¢ OP_OR exp
-   38    | exp â€¢ OP_EQ exp
-   39    | exp â€¢ OP_NE exp
-   40    | exp â€¢ OP_LT exp
-   41    | exp â€¢ OP_GT exp
-   42    | exp â€¢ OP_LE exp
-   43    | exp â€¢ OP_GE exp
-   44    | OP_NOT exp â€¢
+   28 exp: exp • OP_PLUS exp
+   29    | exp • OP_MINUS exp
+   30    | exp • OP_TIMES exp
+   31    | exp • OP_DIV exp
+   32    | exp • OP_REM exp
+   33    | exp • OP_BOR exp
+   34    | exp • OP_BAND exp
+   35    | exp • OP_XOR exp
+   36    | exp • OP_AND exp
+   37    | exp • OP_OR exp
+   38    | exp • OP_EQ exp
+   39    | exp • OP_NE exp
+   40    | exp • OP_LT exp
+   41    | exp • OP_GT exp
+   42    | exp • OP_LE exp
+   43    | exp • OP_GE exp
+   44    | OP_NOT exp •
 
     $default  reduce using rule 44 (exp)
 
 
 State 39
 
-   14 stmt: RETURN exp SEMICOLON â€¢
+   14 stmt: RETURN exp SEMICOLON •
 
     $default  reduce using rule 14 (stmt)
 
 
 State 40
 
-   37 exp: exp OP_OR â€¢ exp
+   37 exp: exp OP_OR • exp
 
     STRING  shift, and go to state 20
     NAME    shift, and go to state 21
@@ -689,7 +689,7 @@ State 40
 
 State 41
 
-   36 exp: exp OP_AND â€¢ exp
+   36 exp: exp OP_AND • exp
 
     STRING  shift, and go to state 20
     NAME    shift, and go to state 21
@@ -702,7 +702,7 @@ State 41
 
 State 42
 
-   33 exp: exp OP_BOR â€¢ exp
+   33 exp: exp OP_BOR • exp
 
     STRING  shift, and go to state 20
     NAME    shift, and go to state 21
@@ -715,7 +715,7 @@ State 42
 
 State 43
 
-   35 exp: exp OP_XOR â€¢ exp
+   35 exp: exp OP_XOR • exp
 
     STRING  shift, and go to state 20
     NAME    shift, and go to state 21
@@ -728,7 +728,7 @@ State 43
 
 State 44
 
-   34 exp: exp OP_BAND â€¢ exp
+   34 exp: exp OP_BAND • exp
 
     STRING  shift, and go to state 20
     NAME    shift, and go to state 21
@@ -741,7 +741,7 @@ State 44
 
 State 45
 
-   38 exp: exp OP_EQ â€¢ exp
+   38 exp: exp OP_EQ • exp
 
     STRING  shift, and go to state 20
     NAME    shift, and go to state 21
@@ -754,7 +754,7 @@ State 45
 
 State 46
 
-   39 exp: exp OP_NE â€¢ exp
+   39 exp: exp OP_NE • exp
 
     STRING  shift, and go to state 20
     NAME    shift, and go to state 21
@@ -767,7 +767,7 @@ State 46
 
 State 47
 
-   40 exp: exp OP_LT â€¢ exp
+   40 exp: exp OP_LT • exp
 
     STRING  shift, and go to state 20
     NAME    shift, and go to state 21
@@ -780,7 +780,7 @@ State 47
 
 State 48
 
-   41 exp: exp OP_GT â€¢ exp
+   41 exp: exp OP_GT • exp
 
     STRING  shift, and go to state 20
     NAME    shift, and go to state 21
@@ -793,7 +793,7 @@ State 48
 
 State 49
 
-   42 exp: exp OP_LE â€¢ exp
+   42 exp: exp OP_LE • exp
 
     STRING  shift, and go to state 20
     NAME    shift, and go to state 21
@@ -806,7 +806,7 @@ State 49
 
 State 50
 
-   43 exp: exp OP_GE â€¢ exp
+   43 exp: exp OP_GE • exp
 
     STRING  shift, and go to state 20
     NAME    shift, and go to state 21
@@ -819,7 +819,7 @@ State 50
 
 State 51
 
-   28 exp: exp OP_PLUS â€¢ exp
+   28 exp: exp OP_PLUS • exp
 
     STRING  shift, and go to state 20
     NAME    shift, and go to state 21
@@ -832,7 +832,7 @@ State 51
 
 State 52
 
-   29 exp: exp OP_MINUS â€¢ exp
+   29 exp: exp OP_MINUS • exp
 
     STRING  shift, and go to state 20
     NAME    shift, and go to state 21
@@ -845,7 +845,7 @@ State 52
 
 State 53
 
-   30 exp: exp OP_TIMES â€¢ exp
+   30 exp: exp OP_TIMES • exp
 
     STRING  shift, and go to state 20
     NAME    shift, and go to state 21
@@ -858,7 +858,7 @@ State 53
 
 State 54
 
-   31 exp: exp OP_DIV â€¢ exp
+   31 exp: exp OP_DIV • exp
 
     STRING  shift, and go to state 20
     NAME    shift, and go to state 21
@@ -871,7 +871,7 @@ State 54
 
 State 55
 
-   32 exp: exp OP_REM â€¢ exp
+   32 exp: exp OP_REM • exp
 
     STRING  shift, and go to state 20
     NAME    shift, and go to state 21
@@ -884,24 +884,24 @@ State 55
 
 State 56
 
-   16 stmt: IF LPAREN exp â€¢ RPAREN LCURL stmts RCURL
-   17     | IF LPAREN exp â€¢ RPAREN LCURL stmts RCURL ELSE LCURL stmts RCURL
-   28 exp: exp â€¢ OP_PLUS exp
-   29    | exp â€¢ OP_MINUS exp
-   30    | exp â€¢ OP_TIMES exp
-   31    | exp â€¢ OP_DIV exp
-   32    | exp â€¢ OP_REM exp
-   33    | exp â€¢ OP_BOR exp
-   34    | exp â€¢ OP_BAND exp
-   35    | exp â€¢ OP_XOR exp
-   36    | exp â€¢ OP_AND exp
-   37    | exp â€¢ OP_OR exp
-   38    | exp â€¢ OP_EQ exp
-   39    | exp â€¢ OP_NE exp
-   40    | exp â€¢ OP_LT exp
-   41    | exp â€¢ OP_GT exp
-   42    | exp â€¢ OP_LE exp
-   43    | exp â€¢ OP_GE exp
+   16 stmt: IF LPAREN exp • RPAREN LCURL stmts RCURL
+   17     | IF LPAREN exp • RPAREN LCURL stmts RCURL ELSE LCURL stmts RCURL
+   28 exp: exp • OP_PLUS exp
+   29    | exp • OP_MINUS exp
+   30    | exp • OP_TIMES exp
+   31    | exp • OP_DIV exp
+   32    | exp • OP_REM exp
+   33    | exp • OP_BOR exp
+   34    | exp • OP_BAND exp
+   35    | exp • OP_XOR exp
+   36    | exp • OP_AND exp
+   37    | exp • OP_OR exp
+   38    | exp • OP_EQ exp
+   39    | exp • OP_NE exp
+   40    | exp • OP_LT exp
+   41    | exp • OP_GT exp
+   42    | exp • OP_LE exp
+   43    | exp • OP_GE exp
 
     RPAREN    shift, and go to state 82
     OP_OR     shift, and go to state 40
@@ -924,24 +924,24 @@ State 56
 
 State 57
 
-   18 stmt: WHILE LPAREN exp â€¢ RPAREN LCURL stmts RCURL
-   19     | WHILE LPAREN exp â€¢ RPAREN LCURL stmts RCURL OTHERWISE LCURL stmts RCURL
-   28 exp: exp â€¢ OP_PLUS exp
-   29    | exp â€¢ OP_MINUS exp
-   30    | exp â€¢ OP_TIMES exp
-   31    | exp â€¢ OP_DIV exp
-   32    | exp â€¢ OP_REM exp
-   33    | exp â€¢ OP_BOR exp
-   34    | exp â€¢ OP_BAND exp
-   35    | exp â€¢ OP_XOR exp
-   36    | exp â€¢ OP_AND exp
-   37    | exp â€¢ OP_OR exp
-   38    | exp â€¢ OP_EQ exp
-   39    | exp â€¢ OP_NE exp
-   40    | exp â€¢ OP_LT exp
-   41    | exp â€¢ OP_GT exp
-   42    | exp â€¢ OP_LE exp
-   43    | exp â€¢ OP_GE exp
+   18 stmt: WHILE LPAREN exp • RPAREN LCURL stmts RCURL
+   19     | WHILE LPAREN exp • RPAREN LCURL stmts RCURL OTHERWISE LCURL stmts RCURL
+   28 exp: exp • OP_PLUS exp
+   29    | exp • OP_MINUS exp
+   30    | exp • OP_TIMES exp
+   31    | exp • OP_DIV exp
+   32    | exp • OP_REM exp
+   33    | exp • OP_BOR exp
+   34    | exp • OP_BAND exp
+   35    | exp • OP_XOR exp
+   36    | exp • OP_AND exp
+   37    | exp • OP_OR exp
+   38    | exp • OP_EQ exp
+   39    | exp • OP_NE exp
+   40    | exp • OP_LT exp
+   41    | exp • OP_GT exp
+   42    | exp • OP_LE exp
+   43    | exp • OP_GE exp
 
     RPAREN    shift, and go to state 83
     OP_OR     shift, and go to state 40
@@ -964,23 +964,23 @@ State 57
 
 State 58
 
-   20 stmt: REPEAT LPAREN exp â€¢ RPAREN LCURL stmts RCURL
-   28 exp: exp â€¢ OP_PLUS exp
-   29    | exp â€¢ OP_MINUS exp
-   30    | exp â€¢ OP_TIMES exp
-   31    | exp â€¢ OP_DIV exp
-   32    | exp â€¢ OP_REM exp
-   33    | exp â€¢ OP_BOR exp
-   34    | exp â€¢ OP_BAND exp
-   35    | exp â€¢ OP_XOR exp
-   36    | exp â€¢ OP_AND exp
-   37    | exp â€¢ OP_OR exp
-   38    | exp â€¢ OP_EQ exp
-   39    | exp â€¢ OP_NE exp
-   40    | exp â€¢ OP_LT exp
-   41    | exp â€¢ OP_GT exp
-   42    | exp â€¢ OP_LE exp
-   43    | exp â€¢ OP_GE exp
+   20 stmt: REPEAT LPAREN exp • RPAREN LCURL stmts RCURL
+   28 exp: exp • OP_PLUS exp
+   29    | exp • OP_MINUS exp
+   30    | exp • OP_TIMES exp
+   31    | exp • OP_DIV exp
+   32    | exp • OP_REM exp
+   33    | exp • OP_BOR exp
+   34    | exp • OP_BAND exp
+   35    | exp • OP_XOR exp
+   36    | exp • OP_AND exp
+   37    | exp • OP_OR exp
+   38    | exp • OP_EQ exp
+   39    | exp • OP_NE exp
+   40    | exp • OP_LT exp
+   41    | exp • OP_GT exp
+   42    | exp • OP_LE exp
+   43    | exp • OP_GE exp
 
     RPAREN    shift, and go to state 84
     OP_OR     shift, and go to state 40
@@ -1003,30 +1003,30 @@ State 58
 
 State 59
 
-    7 func: FUN NAME TYPE â€¢ LPAREN argdecls RPAREN LCURL vars stmts RCURL
+    7 func: FUN NAME TYPE • LPAREN argdecls RPAREN LCURL vars stmts RCURL
 
     LPAREN  shift, and go to state 85
 
 
 State 60
 
-    4 var: VAR NAME TYPE ASSIGN exp â€¢ SEMICOLON
-   28 exp: exp â€¢ OP_PLUS exp
-   29    | exp â€¢ OP_MINUS exp
-   30    | exp â€¢ OP_TIMES exp
-   31    | exp â€¢ OP_DIV exp
-   32    | exp â€¢ OP_REM exp
-   33    | exp â€¢ OP_BOR exp
-   34    | exp â€¢ OP_BAND exp
-   35    | exp â€¢ OP_XOR exp
-   36    | exp â€¢ OP_AND exp
-   37    | exp â€¢ OP_OR exp
-   38    | exp â€¢ OP_EQ exp
-   39    | exp â€¢ OP_NE exp
-   40    | exp â€¢ OP_LT exp
-   41    | exp â€¢ OP_GT exp
-   42    | exp â€¢ OP_LE exp
-   43    | exp â€¢ OP_GE exp
+    4 var: VAR NAME TYPE ASSIGN exp • SEMICOLON
+   28 exp: exp • OP_PLUS exp
+   29    | exp • OP_MINUS exp
+   30    | exp • OP_TIMES exp
+   31    | exp • OP_DIV exp
+   32    | exp • OP_REM exp
+   33    | exp • OP_BOR exp
+   34    | exp • OP_BAND exp
+   35    | exp • OP_XOR exp
+   36    | exp • OP_AND exp
+   37    | exp • OP_OR exp
+   38    | exp • OP_EQ exp
+   39    | exp • OP_NE exp
+   40    | exp • OP_LT exp
+   41    | exp • OP_GT exp
+   42    | exp • OP_LE exp
+   43    | exp • OP_GE exp
 
     SEMICOLON  shift, and go to state 86
     OP_OR      shift, and go to state 40
@@ -1049,7 +1049,7 @@ State 60
 
 State 61
 
-   45 exps: exp COMMA â€¢ exps
+   45 exps: exp COMMA • exps
 
     STRING  shift, and go to state 20
     NAME    shift, and go to state 21
@@ -1065,51 +1065,51 @@ State 61
 
 State 62
 
-   22 stmt: NAME LPAREN exps RPAREN â€¢ SEMICOLON
+   22 stmt: NAME LPAREN exps RPAREN • SEMICOLON
 
     SEMICOLON  shift, and go to state 88
 
 
 State 63
 
-   21 stmt: NAME ASSIGN exp SEMICOLON â€¢
+   21 stmt: NAME ASSIGN exp SEMICOLON •
 
     $default  reduce using rule 21 (stmt)
 
 
 State 64
 
-   27 exp: NAME LPAREN exps â€¢ RPAREN
+   27 exp: NAME LPAREN exps • RPAREN
 
     RPAREN  shift, and go to state 89
 
 
 State 65
 
-   26 exp: LPAREN exp RPAREN â€¢
+   26 exp: LPAREN exp RPAREN •
 
     $default  reduce using rule 26 (exp)
 
 
 State 66
 
-   28 exp: exp â€¢ OP_PLUS exp
-   29    | exp â€¢ OP_MINUS exp
-   30    | exp â€¢ OP_TIMES exp
-   31    | exp â€¢ OP_DIV exp
-   32    | exp â€¢ OP_REM exp
-   33    | exp â€¢ OP_BOR exp
-   34    | exp â€¢ OP_BAND exp
-   35    | exp â€¢ OP_XOR exp
-   36    | exp â€¢ OP_AND exp
-   37    | exp â€¢ OP_OR exp
-   37    | exp OP_OR exp â€¢
-   38    | exp â€¢ OP_EQ exp
-   39    | exp â€¢ OP_NE exp
-   40    | exp â€¢ OP_LT exp
-   41    | exp â€¢ OP_GT exp
-   42    | exp â€¢ OP_LE exp
-   43    | exp â€¢ OP_GE exp
+   28 exp: exp • OP_PLUS exp
+   29    | exp • OP_MINUS exp
+   30    | exp • OP_TIMES exp
+   31    | exp • OP_DIV exp
+   32    | exp • OP_REM exp
+   33    | exp • OP_BOR exp
+   34    | exp • OP_BAND exp
+   35    | exp • OP_XOR exp
+   36    | exp • OP_AND exp
+   37    | exp • OP_OR exp
+   37    | exp OP_OR exp •
+   38    | exp • OP_EQ exp
+   39    | exp • OP_NE exp
+   40    | exp • OP_LT exp
+   41    | exp • OP_GT exp
+   42    | exp • OP_LE exp
+   43    | exp • OP_GE exp
 
     OP_AND    shift, and go to state 41
     OP_BOR    shift, and go to state 42
@@ -1132,23 +1132,23 @@ State 66
 
 State 67
 
-   28 exp: exp â€¢ OP_PLUS exp
-   29    | exp â€¢ OP_MINUS exp
-   30    | exp â€¢ OP_TIMES exp
-   31    | exp â€¢ OP_DIV exp
-   32    | exp â€¢ OP_REM exp
-   33    | exp â€¢ OP_BOR exp
-   34    | exp â€¢ OP_BAND exp
-   35    | exp â€¢ OP_XOR exp
-   36    | exp â€¢ OP_AND exp
-   36    | exp OP_AND exp â€¢
-   37    | exp â€¢ OP_OR exp
-   38    | exp â€¢ OP_EQ exp
-   39    | exp â€¢ OP_NE exp
-   40    | exp â€¢ OP_LT exp
-   41    | exp â€¢ OP_GT exp
-   42    | exp â€¢ OP_LE exp
-   43    | exp â€¢ OP_GE exp
+   28 exp: exp • OP_PLUS exp
+   29    | exp • OP_MINUS exp
+   30    | exp • OP_TIMES exp
+   31    | exp • OP_DIV exp
+   32    | exp • OP_REM exp
+   33    | exp • OP_BOR exp
+   34    | exp • OP_BAND exp
+   35    | exp • OP_XOR exp
+   36    | exp • OP_AND exp
+   36    | exp OP_AND exp •
+   37    | exp • OP_OR exp
+   38    | exp • OP_EQ exp
+   39    | exp • OP_NE exp
+   40    | exp • OP_LT exp
+   41    | exp • OP_GT exp
+   42    | exp • OP_LE exp
+   43    | exp • OP_GE exp
 
     OP_BOR    shift, and go to state 42
     OP_XOR    shift, and go to state 43
@@ -1170,23 +1170,23 @@ State 67
 
 State 68
 
-   28 exp: exp â€¢ OP_PLUS exp
-   29    | exp â€¢ OP_MINUS exp
-   30    | exp â€¢ OP_TIMES exp
-   31    | exp â€¢ OP_DIV exp
-   32    | exp â€¢ OP_REM exp
-   33    | exp â€¢ OP_BOR exp
-   33    | exp OP_BOR exp â€¢
-   34    | exp â€¢ OP_BAND exp
-   35    | exp â€¢ OP_XOR exp
-   36    | exp â€¢ OP_AND exp
-   37    | exp â€¢ OP_OR exp
-   38    | exp â€¢ OP_EQ exp
-   39    | exp â€¢ OP_NE exp
-   40    | exp â€¢ OP_LT exp
-   41    | exp â€¢ OP_GT exp
-   42    | exp â€¢ OP_LE exp
-   43    | exp â€¢ OP_GE exp
+   28 exp: exp • OP_PLUS exp
+   29    | exp • OP_MINUS exp
+   30    | exp • OP_TIMES exp
+   31    | exp • OP_DIV exp
+   32    | exp • OP_REM exp
+   33    | exp • OP_BOR exp
+   33    | exp OP_BOR exp •
+   34    | exp • OP_BAND exp
+   35    | exp • OP_XOR exp
+   36    | exp • OP_AND exp
+   37    | exp • OP_OR exp
+   38    | exp • OP_EQ exp
+   39    | exp • OP_NE exp
+   40    | exp • OP_LT exp
+   41    | exp • OP_GT exp
+   42    | exp • OP_LE exp
+   43    | exp • OP_GE exp
 
     OP_XOR    shift, and go to state 43
     OP_BAND   shift, and go to state 44
@@ -1207,23 +1207,23 @@ State 68
 
 State 69
 
-   28 exp: exp â€¢ OP_PLUS exp
-   29    | exp â€¢ OP_MINUS exp
-   30    | exp â€¢ OP_TIMES exp
-   31    | exp â€¢ OP_DIV exp
-   32    | exp â€¢ OP_REM exp
-   33    | exp â€¢ OP_BOR exp
-   34    | exp â€¢ OP_BAND exp
-   35    | exp â€¢ OP_XOR exp
-   35    | exp OP_XOR exp â€¢
-   36    | exp â€¢ OP_AND exp
-   37    | exp â€¢ OP_OR exp
-   38    | exp â€¢ OP_EQ exp
-   39    | exp â€¢ OP_NE exp
-   40    | exp â€¢ OP_LT exp
-   41    | exp â€¢ OP_GT exp
-   42    | exp â€¢ OP_LE exp
-   43    | exp â€¢ OP_GE exp
+   28 exp: exp • OP_PLUS exp
+   29    | exp • OP_MINUS exp
+   30    | exp • OP_TIMES exp
+   31    | exp • OP_DIV exp
+   32    | exp • OP_REM exp
+   33    | exp • OP_BOR exp
+   34    | exp • OP_BAND exp
+   35    | exp • OP_XOR exp
+   35    | exp OP_XOR exp •
+   36    | exp • OP_AND exp
+   37    | exp • OP_OR exp
+   38    | exp • OP_EQ exp
+   39    | exp • OP_NE exp
+   40    | exp • OP_LT exp
+   41    | exp • OP_GT exp
+   42    | exp • OP_LE exp
+   43    | exp • OP_GE exp
 
     OP_BAND   shift, and go to state 44
     OP_EQ     shift, and go to state 45
@@ -1243,23 +1243,23 @@ State 69
 
 State 70
 
-   28 exp: exp â€¢ OP_PLUS exp
-   29    | exp â€¢ OP_MINUS exp
-   30    | exp â€¢ OP_TIMES exp
-   31    | exp â€¢ OP_DIV exp
-   32    | exp â€¢ OP_REM exp
-   33    | exp â€¢ OP_BOR exp
-   34    | exp â€¢ OP_BAND exp
-   34    | exp OP_BAND exp â€¢
-   35    | exp â€¢ OP_XOR exp
-   36    | exp â€¢ OP_AND exp
-   37    | exp â€¢ OP_OR exp
-   38    | exp â€¢ OP_EQ exp
-   39    | exp â€¢ OP_NE exp
-   40    | exp â€¢ OP_LT exp
-   41    | exp â€¢ OP_GT exp
-   42    | exp â€¢ OP_LE exp
-   43    | exp â€¢ OP_GE exp
+   28 exp: exp • OP_PLUS exp
+   29    | exp • OP_MINUS exp
+   30    | exp • OP_TIMES exp
+   31    | exp • OP_DIV exp
+   32    | exp • OP_REM exp
+   33    | exp • OP_BOR exp
+   34    | exp • OP_BAND exp
+   34    | exp OP_BAND exp •
+   35    | exp • OP_XOR exp
+   36    | exp • OP_AND exp
+   37    | exp • OP_OR exp
+   38    | exp • OP_EQ exp
+   39    | exp • OP_NE exp
+   40    | exp • OP_LT exp
+   41    | exp • OP_GT exp
+   42    | exp • OP_LE exp
+   43    | exp • OP_GE exp
 
     OP_EQ     shift, and go to state 45
     OP_NE     shift, and go to state 46
@@ -1278,23 +1278,23 @@ State 70
 
 State 71
 
-   28 exp: exp â€¢ OP_PLUS exp
-   29    | exp â€¢ OP_MINUS exp
-   30    | exp â€¢ OP_TIMES exp
-   31    | exp â€¢ OP_DIV exp
-   32    | exp â€¢ OP_REM exp
-   33    | exp â€¢ OP_BOR exp
-   34    | exp â€¢ OP_BAND exp
-   35    | exp â€¢ OP_XOR exp
-   36    | exp â€¢ OP_AND exp
-   37    | exp â€¢ OP_OR exp
-   38    | exp â€¢ OP_EQ exp
-   38    | exp OP_EQ exp â€¢
-   39    | exp â€¢ OP_NE exp
-   40    | exp â€¢ OP_LT exp
-   41    | exp â€¢ OP_GT exp
-   42    | exp â€¢ OP_LE exp
-   43    | exp â€¢ OP_GE exp
+   28 exp: exp • OP_PLUS exp
+   29    | exp • OP_MINUS exp
+   30    | exp • OP_TIMES exp
+   31    | exp • OP_DIV exp
+   32    | exp • OP_REM exp
+   33    | exp • OP_BOR exp
+   34    | exp • OP_BAND exp
+   35    | exp • OP_XOR exp
+   36    | exp • OP_AND exp
+   37    | exp • OP_OR exp
+   38    | exp • OP_EQ exp
+   38    | exp OP_EQ exp •
+   39    | exp • OP_NE exp
+   40    | exp • OP_LT exp
+   41    | exp • OP_GT exp
+   42    | exp • OP_LE exp
+   43    | exp • OP_GE exp
 
     OP_LT     shift, and go to state 47
     OP_GT     shift, and go to state 48
@@ -1311,23 +1311,23 @@ State 71
 
 State 72
 
-   28 exp: exp â€¢ OP_PLUS exp
-   29    | exp â€¢ OP_MINUS exp
-   30    | exp â€¢ OP_TIMES exp
-   31    | exp â€¢ OP_DIV exp
-   32    | exp â€¢ OP_REM exp
-   33    | exp â€¢ OP_BOR exp
-   34    | exp â€¢ OP_BAND exp
-   35    | exp â€¢ OP_XOR exp
-   36    | exp â€¢ OP_AND exp
-   37    | exp â€¢ OP_OR exp
-   38    | exp â€¢ OP_EQ exp
-   39    | exp â€¢ OP_NE exp
-   39    | exp OP_NE exp â€¢
-   40    | exp â€¢ OP_LT exp
-   41    | exp â€¢ OP_GT exp
-   42    | exp â€¢ OP_LE exp
-   43    | exp â€¢ OP_GE exp
+   28 exp: exp • OP_PLUS exp
+   29    | exp • OP_MINUS exp
+   30    | exp • OP_TIMES exp
+   31    | exp • OP_DIV exp
+   32    | exp • OP_REM exp
+   33    | exp • OP_BOR exp
+   34    | exp • OP_BAND exp
+   35    | exp • OP_XOR exp
+   36    | exp • OP_AND exp
+   37    | exp • OP_OR exp
+   38    | exp • OP_EQ exp
+   39    | exp • OP_NE exp
+   39    | exp OP_NE exp •
+   40    | exp • OP_LT exp
+   41    | exp • OP_GT exp
+   42    | exp • OP_LE exp
+   43    | exp • OP_GE exp
 
     OP_LT     shift, and go to state 47
     OP_GT     shift, and go to state 48
@@ -1344,23 +1344,23 @@ State 72
 
 State 73
 
-   28 exp: exp â€¢ OP_PLUS exp
-   29    | exp â€¢ OP_MINUS exp
-   30    | exp â€¢ OP_TIMES exp
-   31    | exp â€¢ OP_DIV exp
-   32    | exp â€¢ OP_REM exp
-   33    | exp â€¢ OP_BOR exp
-   34    | exp â€¢ OP_BAND exp
-   35    | exp â€¢ OP_XOR exp
-   36    | exp â€¢ OP_AND exp
-   37    | exp â€¢ OP_OR exp
-   38    | exp â€¢ OP_EQ exp
-   39    | exp â€¢ OP_NE exp
-   40    | exp â€¢ OP_LT exp
-   40    | exp OP_LT exp â€¢
-   41    | exp â€¢ OP_GT exp
-   42    | exp â€¢ OP_LE exp
-   43    | exp â€¢ OP_GE exp
+   28 exp: exp • OP_PLUS exp
+   29    | exp • OP_MINUS exp
+   30    | exp • OP_TIMES exp
+   31    | exp • OP_DIV exp
+   32    | exp • OP_REM exp
+   33    | exp • OP_BOR exp
+   34    | exp • OP_BAND exp
+   35    | exp • OP_XOR exp
+   36    | exp • OP_AND exp
+   37    | exp • OP_OR exp
+   38    | exp • OP_EQ exp
+   39    | exp • OP_NE exp
+   40    | exp • OP_LT exp
+   40    | exp OP_LT exp •
+   41    | exp • OP_GT exp
+   42    | exp • OP_LE exp
+   43    | exp • OP_GE exp
 
     OP_PLUS   shift, and go to state 51
     OP_MINUS  shift, and go to state 52
@@ -1373,23 +1373,23 @@ State 73
 
 State 74
 
-   28 exp: exp â€¢ OP_PLUS exp
-   29    | exp â€¢ OP_MINUS exp
-   30    | exp â€¢ OP_TIMES exp
-   31    | exp â€¢ OP_DIV exp
-   32    | exp â€¢ OP_REM exp
-   33    | exp â€¢ OP_BOR exp
-   34    | exp â€¢ OP_BAND exp
-   35    | exp â€¢ OP_XOR exp
-   36    | exp â€¢ OP_AND exp
-   37    | exp â€¢ OP_OR exp
-   38    | exp â€¢ OP_EQ exp
-   39    | exp â€¢ OP_NE exp
-   40    | exp â€¢ OP_LT exp
-   41    | exp â€¢ OP_GT exp
-   41    | exp OP_GT exp â€¢
-   42    | exp â€¢ OP_LE exp
-   43    | exp â€¢ OP_GE exp
+   28 exp: exp • OP_PLUS exp
+   29    | exp • OP_MINUS exp
+   30    | exp • OP_TIMES exp
+   31    | exp • OP_DIV exp
+   32    | exp • OP_REM exp
+   33    | exp • OP_BOR exp
+   34    | exp • OP_BAND exp
+   35    | exp • OP_XOR exp
+   36    | exp • OP_AND exp
+   37    | exp • OP_OR exp
+   38    | exp • OP_EQ exp
+   39    | exp • OP_NE exp
+   40    | exp • OP_LT exp
+   41    | exp • OP_GT exp
+   41    | exp OP_GT exp •
+   42    | exp • OP_LE exp
+   43    | exp • OP_GE exp
 
     OP_PLUS   shift, and go to state 51
     OP_MINUS  shift, and go to state 52
@@ -1402,23 +1402,23 @@ State 74
 
 State 75
 
-   28 exp: exp â€¢ OP_PLUS exp
-   29    | exp â€¢ OP_MINUS exp
-   30    | exp â€¢ OP_TIMES exp
-   31    | exp â€¢ OP_DIV exp
-   32    | exp â€¢ OP_REM exp
-   33    | exp â€¢ OP_BOR exp
-   34    | exp â€¢ OP_BAND exp
-   35    | exp â€¢ OP_XOR exp
-   36    | exp â€¢ OP_AND exp
-   37    | exp â€¢ OP_OR exp
-   38    | exp â€¢ OP_EQ exp
-   39    | exp â€¢ OP_NE exp
-   40    | exp â€¢ OP_LT exp
-   41    | exp â€¢ OP_GT exp
-   42    | exp â€¢ OP_LE exp
-   42    | exp OP_LE exp â€¢
-   43    | exp â€¢ OP_GE exp
+   28 exp: exp • OP_PLUS exp
+   29    | exp • OP_MINUS exp
+   30    | exp • OP_TIMES exp
+   31    | exp • OP_DIV exp
+   32    | exp • OP_REM exp
+   33    | exp • OP_BOR exp
+   34    | exp • OP_BAND exp
+   35    | exp • OP_XOR exp
+   36    | exp • OP_AND exp
+   37    | exp • OP_OR exp
+   38    | exp • OP_EQ exp
+   39    | exp • OP_NE exp
+   40    | exp • OP_LT exp
+   41    | exp • OP_GT exp
+   42    | exp • OP_LE exp
+   42    | exp OP_LE exp •
+   43    | exp • OP_GE exp
 
     OP_PLUS   shift, and go to state 51
     OP_MINUS  shift, and go to state 52
@@ -1431,23 +1431,23 @@ State 75
 
 State 76
 
-   28 exp: exp â€¢ OP_PLUS exp
-   29    | exp â€¢ OP_MINUS exp
-   30    | exp â€¢ OP_TIMES exp
-   31    | exp â€¢ OP_DIV exp
-   32    | exp â€¢ OP_REM exp
-   33    | exp â€¢ OP_BOR exp
-   34    | exp â€¢ OP_BAND exp
-   35    | exp â€¢ OP_XOR exp
-   36    | exp â€¢ OP_AND exp
-   37    | exp â€¢ OP_OR exp
-   38    | exp â€¢ OP_EQ exp
-   39    | exp â€¢ OP_NE exp
-   40    | exp â€¢ OP_LT exp
-   41    | exp â€¢ OP_GT exp
-   42    | exp â€¢ OP_LE exp
-   43    | exp â€¢ OP_GE exp
-   43    | exp OP_GE exp â€¢
+   28 exp: exp • OP_PLUS exp
+   29    | exp • OP_MINUS exp
+   30    | exp • OP_TIMES exp
+   31    | exp • OP_DIV exp
+   32    | exp • OP_REM exp
+   33    | exp • OP_BOR exp
+   34    | exp • OP_BAND exp
+   35    | exp • OP_XOR exp
+   36    | exp • OP_AND exp
+   37    | exp • OP_OR exp
+   38    | exp • OP_EQ exp
+   39    | exp • OP_NE exp
+   40    | exp • OP_LT exp
+   41    | exp • OP_GT exp
+   42    | exp • OP_LE exp
+   43    | exp • OP_GE exp
+   43    | exp OP_GE exp •
 
     OP_PLUS   shift, and go to state 51
     OP_MINUS  shift, and go to state 52
@@ -1460,23 +1460,23 @@ State 76
 
 State 77
 
-   28 exp: exp â€¢ OP_PLUS exp
-   28    | exp OP_PLUS exp â€¢
-   29    | exp â€¢ OP_MINUS exp
-   30    | exp â€¢ OP_TIMES exp
-   31    | exp â€¢ OP_DIV exp
-   32    | exp â€¢ OP_REM exp
-   33    | exp â€¢ OP_BOR exp
-   34    | exp â€¢ OP_BAND exp
-   35    | exp â€¢ OP_XOR exp
-   36    | exp â€¢ OP_AND exp
-   37    | exp â€¢ OP_OR exp
-   38    | exp â€¢ OP_EQ exp
-   39    | exp â€¢ OP_NE exp
-   40    | exp â€¢ OP_LT exp
-   41    | exp â€¢ OP_GT exp
-   42    | exp â€¢ OP_LE exp
-   43    | exp â€¢ OP_GE exp
+   28 exp: exp • OP_PLUS exp
+   28    | exp OP_PLUS exp •
+   29    | exp • OP_MINUS exp
+   30    | exp • OP_TIMES exp
+   31    | exp • OP_DIV exp
+   32    | exp • OP_REM exp
+   33    | exp • OP_BOR exp
+   34    | exp • OP_BAND exp
+   35    | exp • OP_XOR exp
+   36    | exp • OP_AND exp
+   37    | exp • OP_OR exp
+   38    | exp • OP_EQ exp
+   39    | exp • OP_NE exp
+   40    | exp • OP_LT exp
+   41    | exp • OP_GT exp
+   42    | exp • OP_LE exp
+   43    | exp • OP_GE exp
 
     OP_TIMES  shift, and go to state 53
     OP_DIV    shift, and go to state 54
@@ -1487,23 +1487,23 @@ State 77
 
 State 78
 
-   28 exp: exp â€¢ OP_PLUS exp
-   29    | exp â€¢ OP_MINUS exp
-   29    | exp OP_MINUS exp â€¢
-   30    | exp â€¢ OP_TIMES exp
-   31    | exp â€¢ OP_DIV exp
-   32    | exp â€¢ OP_REM exp
-   33    | exp â€¢ OP_BOR exp
-   34    | exp â€¢ OP_BAND exp
-   35    | exp â€¢ OP_XOR exp
-   36    | exp â€¢ OP_AND exp
-   37    | exp â€¢ OP_OR exp
-   38    | exp â€¢ OP_EQ exp
-   39    | exp â€¢ OP_NE exp
-   40    | exp â€¢ OP_LT exp
-   41    | exp â€¢ OP_GT exp
-   42    | exp â€¢ OP_LE exp
-   43    | exp â€¢ OP_GE exp
+   28 exp: exp • OP_PLUS exp
+   29    | exp • OP_MINUS exp
+   29    | exp OP_MINUS exp •
+   30    | exp • OP_TIMES exp
+   31    | exp • OP_DIV exp
+   32    | exp • OP_REM exp
+   33    | exp • OP_BOR exp
+   34    | exp • OP_BAND exp
+   35    | exp • OP_XOR exp
+   36    | exp • OP_AND exp
+   37    | exp • OP_OR exp
+   38    | exp • OP_EQ exp
+   39    | exp • OP_NE exp
+   40    | exp • OP_LT exp
+   41    | exp • OP_GT exp
+   42    | exp • OP_LE exp
+   43    | exp • OP_GE exp
 
     OP_TIMES  shift, and go to state 53
     OP_DIV    shift, and go to state 54
@@ -1514,99 +1514,99 @@ State 78
 
 State 79
 
-   28 exp: exp â€¢ OP_PLUS exp
-   29    | exp â€¢ OP_MINUS exp
-   30    | exp â€¢ OP_TIMES exp
-   30    | exp OP_TIMES exp â€¢
-   31    | exp â€¢ OP_DIV exp
-   32    | exp â€¢ OP_REM exp
-   33    | exp â€¢ OP_BOR exp
-   34    | exp â€¢ OP_BAND exp
-   35    | exp â€¢ OP_XOR exp
-   36    | exp â€¢ OP_AND exp
-   37    | exp â€¢ OP_OR exp
-   38    | exp â€¢ OP_EQ exp
-   39    | exp â€¢ OP_NE exp
-   40    | exp â€¢ OP_LT exp
-   41    | exp â€¢ OP_GT exp
-   42    | exp â€¢ OP_LE exp
-   43    | exp â€¢ OP_GE exp
+   28 exp: exp • OP_PLUS exp
+   29    | exp • OP_MINUS exp
+   30    | exp • OP_TIMES exp
+   30    | exp OP_TIMES exp •
+   31    | exp • OP_DIV exp
+   32    | exp • OP_REM exp
+   33    | exp • OP_BOR exp
+   34    | exp • OP_BAND exp
+   35    | exp • OP_XOR exp
+   36    | exp • OP_AND exp
+   37    | exp • OP_OR exp
+   38    | exp • OP_EQ exp
+   39    | exp • OP_NE exp
+   40    | exp • OP_LT exp
+   41    | exp • OP_GT exp
+   42    | exp • OP_LE exp
+   43    | exp • OP_GE exp
 
     $default  reduce using rule 30 (exp)
 
 
 State 80
 
-   28 exp: exp â€¢ OP_PLUS exp
-   29    | exp â€¢ OP_MINUS exp
-   30    | exp â€¢ OP_TIMES exp
-   31    | exp â€¢ OP_DIV exp
-   31    | exp OP_DIV exp â€¢
-   32    | exp â€¢ OP_REM exp
-   33    | exp â€¢ OP_BOR exp
-   34    | exp â€¢ OP_BAND exp
-   35    | exp â€¢ OP_XOR exp
-   36    | exp â€¢ OP_AND exp
-   37    | exp â€¢ OP_OR exp
-   38    | exp â€¢ OP_EQ exp
-   39    | exp â€¢ OP_NE exp
-   40    | exp â€¢ OP_LT exp
-   41    | exp â€¢ OP_GT exp
-   42    | exp â€¢ OP_LE exp
-   43    | exp â€¢ OP_GE exp
+   28 exp: exp • OP_PLUS exp
+   29    | exp • OP_MINUS exp
+   30    | exp • OP_TIMES exp
+   31    | exp • OP_DIV exp
+   31    | exp OP_DIV exp •
+   32    | exp • OP_REM exp
+   33    | exp • OP_BOR exp
+   34    | exp • OP_BAND exp
+   35    | exp • OP_XOR exp
+   36    | exp • OP_AND exp
+   37    | exp • OP_OR exp
+   38    | exp • OP_EQ exp
+   39    | exp • OP_NE exp
+   40    | exp • OP_LT exp
+   41    | exp • OP_GT exp
+   42    | exp • OP_LE exp
+   43    | exp • OP_GE exp
 
     $default  reduce using rule 31 (exp)
 
 
 State 81
 
-   28 exp: exp â€¢ OP_PLUS exp
-   29    | exp â€¢ OP_MINUS exp
-   30    | exp â€¢ OP_TIMES exp
-   31    | exp â€¢ OP_DIV exp
-   32    | exp â€¢ OP_REM exp
-   32    | exp OP_REM exp â€¢
-   33    | exp â€¢ OP_BOR exp
-   34    | exp â€¢ OP_BAND exp
-   35    | exp â€¢ OP_XOR exp
-   36    | exp â€¢ OP_AND exp
-   37    | exp â€¢ OP_OR exp
-   38    | exp â€¢ OP_EQ exp
-   39    | exp â€¢ OP_NE exp
-   40    | exp â€¢ OP_LT exp
-   41    | exp â€¢ OP_GT exp
-   42    | exp â€¢ OP_LE exp
-   43    | exp â€¢ OP_GE exp
+   28 exp: exp • OP_PLUS exp
+   29    | exp • OP_MINUS exp
+   30    | exp • OP_TIMES exp
+   31    | exp • OP_DIV exp
+   32    | exp • OP_REM exp
+   32    | exp OP_REM exp •
+   33    | exp • OP_BOR exp
+   34    | exp • OP_BAND exp
+   35    | exp • OP_XOR exp
+   36    | exp • OP_AND exp
+   37    | exp • OP_OR exp
+   38    | exp • OP_EQ exp
+   39    | exp • OP_NE exp
+   40    | exp • OP_LT exp
+   41    | exp • OP_GT exp
+   42    | exp • OP_LE exp
+   43    | exp • OP_GE exp
 
     $default  reduce using rule 32 (exp)
 
 
 State 82
 
-   16 stmt: IF LPAREN exp RPAREN â€¢ LCURL stmts RCURL
-   17     | IF LPAREN exp RPAREN â€¢ LCURL stmts RCURL ELSE LCURL stmts RCURL
+   16 stmt: IF LPAREN exp RPAREN • LCURL stmts RCURL
+   17     | IF LPAREN exp RPAREN • LCURL stmts RCURL ELSE LCURL stmts RCURL
 
     LCURL  shift, and go to state 90
 
 
 State 83
 
-   18 stmt: WHILE LPAREN exp RPAREN â€¢ LCURL stmts RCURL
-   19     | WHILE LPAREN exp RPAREN â€¢ LCURL stmts RCURL OTHERWISE LCURL stmts RCURL
+   18 stmt: WHILE LPAREN exp RPAREN • LCURL stmts RCURL
+   19     | WHILE LPAREN exp RPAREN • LCURL stmts RCURL OTHERWISE LCURL stmts RCURL
 
     LCURL  shift, and go to state 91
 
 
 State 84
 
-   20 stmt: REPEAT LPAREN exp RPAREN â€¢ LCURL stmts RCURL
+   20 stmt: REPEAT LPAREN exp RPAREN • LCURL stmts RCURL
 
     LCURL  shift, and go to state 92
 
 
 State 85
 
-    7 func: FUN NAME TYPE LPAREN â€¢ argdecls RPAREN LCURL vars stmts RCURL
+    7 func: FUN NAME TYPE LPAREN • argdecls RPAREN LCURL vars stmts RCURL
 
     NAME  shift, and go to state 93
 
@@ -1618,36 +1618,36 @@ State 85
 
 State 86
 
-    4 var: VAR NAME TYPE ASSIGN exp SEMICOLON â€¢
+    4 var: VAR NAME TYPE ASSIGN exp SEMICOLON •
 
     $default  reduce using rule 4 (var)
 
 
 State 87
 
-   45 exps: exp COMMA exps â€¢
+   45 exps: exp COMMA exps •
 
     $default  reduce using rule 45 (exps)
 
 
 State 88
 
-   22 stmt: NAME LPAREN exps RPAREN SEMICOLON â€¢
+   22 stmt: NAME LPAREN exps RPAREN SEMICOLON •
 
     $default  reduce using rule 22 (stmt)
 
 
 State 89
 
-   27 exp: NAME LPAREN exps RPAREN â€¢
+   27 exp: NAME LPAREN exps RPAREN •
 
     $default  reduce using rule 27 (exp)
 
 
 State 90
 
-   16 stmt: IF LPAREN exp RPAREN LCURL â€¢ stmts RCURL
-   17     | IF LPAREN exp RPAREN LCURL â€¢ stmts RCURL ELSE LCURL stmts RCURL
+   16 stmt: IF LPAREN exp RPAREN LCURL • stmts RCURL
+   17     | IF LPAREN exp RPAREN LCURL • stmts RCURL ELSE LCURL stmts RCURL
 
     NAME    shift, and go to state 8
     RETURN  shift, and go to state 9
@@ -1661,8 +1661,8 @@ State 90
 
 State 91
 
-   18 stmt: WHILE LPAREN exp RPAREN LCURL â€¢ stmts RCURL
-   19     | WHILE LPAREN exp RPAREN LCURL â€¢ stmts RCURL OTHERWISE LCURL stmts RCURL
+   18 stmt: WHILE LPAREN exp RPAREN LCURL • stmts RCURL
+   19     | WHILE LPAREN exp RPAREN LCURL • stmts RCURL OTHERWISE LCURL stmts RCURL
 
     NAME    shift, and go to state 8
     RETURN  shift, and go to state 9
@@ -1676,7 +1676,7 @@ State 91
 
 State 92
 
-   20 stmt: REPEAT LPAREN exp RPAREN LCURL â€¢ stmts RCURL
+   20 stmt: REPEAT LPAREN exp RPAREN LCURL • stmts RCURL
 
     NAME    shift, and go to state 8
     RETURN  shift, and go to state 9
@@ -1690,22 +1690,22 @@ State 92
 
 State 93
 
-   11 argdecl: NAME â€¢ TYPE
+   11 argdecl: NAME • TYPE
 
     TYPE  shift, and go to state 99
 
 
 State 94
 
-    7 func: FUN NAME TYPE LPAREN argdecls â€¢ RPAREN LCURL vars stmts RCURL
+    7 func: FUN NAME TYPE LPAREN argdecls • RPAREN LCURL vars stmts RCURL
 
     RPAREN  shift, and go to state 100
 
 
 State 95
 
-    9 argdecls: argdecl â€¢
-   10         | argdecl â€¢ COMMA argdecls
+    9 argdecls: argdecl •
+   10         | argdecl • COMMA argdecls
 
     COMMA  shift, and go to state 101
 
@@ -1714,9 +1714,9 @@ State 95
 
 State 96
 
-   12 stmts: stmts â€¢ stmt
-   16 stmt: IF LPAREN exp RPAREN LCURL stmts â€¢ RCURL
-   17     | IF LPAREN exp RPAREN LCURL stmts â€¢ RCURL ELSE LCURL stmts RCURL
+   12 stmts: stmts • stmt
+   16 stmt: IF LPAREN exp RPAREN LCURL stmts • RCURL
+   17     | IF LPAREN exp RPAREN LCURL stmts • RCURL ELSE LCURL stmts RCURL
 
     NAME    shift, and go to state 8
     RETURN  shift, and go to state 9
@@ -1730,9 +1730,9 @@ State 96
 
 State 97
 
-   12 stmts: stmts â€¢ stmt
-   18 stmt: WHILE LPAREN exp RPAREN LCURL stmts â€¢ RCURL
-   19     | WHILE LPAREN exp RPAREN LCURL stmts â€¢ RCURL OTHERWISE LCURL stmts RCURL
+   12 stmts: stmts • stmt
+   18 stmt: WHILE LPAREN exp RPAREN LCURL stmts • RCURL
+   19     | WHILE LPAREN exp RPAREN LCURL stmts • RCURL OTHERWISE LCURL stmts RCURL
 
     NAME    shift, and go to state 8
     RETURN  shift, and go to state 9
@@ -1746,8 +1746,8 @@ State 97
 
 State 98
 
-   12 stmts: stmts â€¢ stmt
-   20 stmt: REPEAT LPAREN exp RPAREN LCURL stmts â€¢ RCURL
+   12 stmts: stmts • stmt
+   20 stmt: REPEAT LPAREN exp RPAREN LCURL stmts • RCURL
 
     NAME    shift, and go to state 8
     RETURN  shift, and go to state 9
@@ -1761,21 +1761,21 @@ State 98
 
 State 99
 
-   11 argdecl: NAME TYPE â€¢
+   11 argdecl: NAME TYPE •
 
     $default  reduce using rule 11 (argdecl)
 
 
 State 100
 
-    7 func: FUN NAME TYPE LPAREN argdecls RPAREN â€¢ LCURL vars stmts RCURL
+    7 func: FUN NAME TYPE LPAREN argdecls RPAREN • LCURL vars stmts RCURL
 
     LCURL  shift, and go to state 105
 
 
 State 101
 
-   10 argdecls: argdecl COMMA â€¢ argdecls
+   10 argdecls: argdecl COMMA • argdecls
 
     NAME  shift, and go to state 93
 
@@ -1787,8 +1787,8 @@ State 101
 
 State 102
 
-   16 stmt: IF LPAREN exp RPAREN LCURL stmts RCURL â€¢
-   17     | IF LPAREN exp RPAREN LCURL stmts RCURL â€¢ ELSE LCURL stmts RCURL
+   16 stmt: IF LPAREN exp RPAREN LCURL stmts RCURL •
+   17     | IF LPAREN exp RPAREN LCURL stmts RCURL • ELSE LCURL stmts RCURL
 
     ELSE  shift, and go to state 107
 
@@ -1797,8 +1797,8 @@ State 102
 
 State 103
 
-   18 stmt: WHILE LPAREN exp RPAREN LCURL stmts RCURL â€¢
-   19     | WHILE LPAREN exp RPAREN LCURL stmts RCURL â€¢ OTHERWISE LCURL stmts RCURL
+   18 stmt: WHILE LPAREN exp RPAREN LCURL stmts RCURL •
+   19     | WHILE LPAREN exp RPAREN LCURL stmts RCURL • OTHERWISE LCURL stmts RCURL
 
     OTHERWISE  shift, and go to state 108
 
@@ -1807,14 +1807,14 @@ State 103
 
 State 104
 
-   20 stmt: REPEAT LPAREN exp RPAREN LCURL stmts RCURL â€¢
+   20 stmt: REPEAT LPAREN exp RPAREN LCURL stmts RCURL •
 
     $default  reduce using rule 20 (stmt)
 
 
 State 105
 
-    7 func: FUN NAME TYPE LPAREN argdecls RPAREN LCURL â€¢ vars stmts RCURL
+    7 func: FUN NAME TYPE LPAREN argdecls RPAREN LCURL • vars stmts RCURL
 
     $default  reduce using rule 3 (vars)
 
@@ -1823,29 +1823,29 @@ State 105
 
 State 106
 
-   10 argdecls: argdecl COMMA argdecls â€¢
+   10 argdecls: argdecl COMMA argdecls •
 
     $default  reduce using rule 10 (argdecls)
 
 
 State 107
 
-   17 stmt: IF LPAREN exp RPAREN LCURL stmts RCURL ELSE â€¢ LCURL stmts RCURL
+   17 stmt: IF LPAREN exp RPAREN LCURL stmts RCURL ELSE • LCURL stmts RCURL
 
     LCURL  shift, and go to state 110
 
 
 State 108
 
-   19 stmt: WHILE LPAREN exp RPAREN LCURL stmts RCURL OTHERWISE â€¢ LCURL stmts RCURL
+   19 stmt: WHILE LPAREN exp RPAREN LCURL stmts RCURL OTHERWISE • LCURL stmts RCURL
 
     LCURL  shift, and go to state 111
 
 
 State 109
 
-    2 vars: vars â€¢ var
-    7 func: FUN NAME TYPE LPAREN argdecls RPAREN LCURL vars â€¢ stmts RCURL
+    2 vars: vars • var
+    7 func: FUN NAME TYPE LPAREN argdecls RPAREN LCURL vars • stmts RCURL
 
     NAME    shift, and go to state 8
     RETURN  shift, and go to state 9
@@ -1861,7 +1861,7 @@ State 109
 
 State 110
 
-   17 stmt: IF LPAREN exp RPAREN LCURL stmts RCURL ELSE LCURL â€¢ stmts RCURL
+   17 stmt: IF LPAREN exp RPAREN LCURL stmts RCURL ELSE LCURL • stmts RCURL
 
     NAME    shift, and go to state 8
     RETURN  shift, and go to state 9
@@ -1875,7 +1875,7 @@ State 110
 
 State 111
 
-   19 stmt: WHILE LPAREN exp RPAREN LCURL stmts RCURL OTHERWISE LCURL â€¢ stmts RCURL
+   19 stmt: WHILE LPAREN exp RPAREN LCURL stmts RCURL OTHERWISE LCURL • stmts RCURL
 
     NAME    shift, and go to state 8
     RETURN  shift, and go to state 9
@@ -1889,8 +1889,8 @@ State 111
 
 State 112
 
-    7 func: FUN NAME TYPE LPAREN argdecls RPAREN LCURL vars stmts â€¢ RCURL
-   12 stmts: stmts â€¢ stmt
+    7 func: FUN NAME TYPE LPAREN argdecls RPAREN LCURL vars stmts • RCURL
+   12 stmts: stmts • stmt
 
     NAME    shift, and go to state 8
     RETURN  shift, and go to state 9
@@ -1904,8 +1904,8 @@ State 112
 
 State 113
 
-   12 stmts: stmts â€¢ stmt
-   17 stmt: IF LPAREN exp RPAREN LCURL stmts RCURL ELSE LCURL stmts â€¢ RCURL
+   12 stmts: stmts • stmt
+   17 stmt: IF LPAREN exp RPAREN LCURL stmts RCURL ELSE LCURL stmts • RCURL
 
     NAME    shift, and go to state 8
     RETURN  shift, and go to state 9
@@ -1919,8 +1919,8 @@ State 113
 
 State 114
 
-   12 stmts: stmts â€¢ stmt
-   19 stmt: WHILE LPAREN exp RPAREN LCURL stmts RCURL OTHERWISE LCURL stmts â€¢ RCURL
+   12 stmts: stmts • stmt
+   19 stmt: WHILE LPAREN exp RPAREN LCURL stmts RCURL OTHERWISE LCURL stmts • RCURL
 
     NAME    shift, and go to state 8
     RETURN  shift, and go to state 9
@@ -1934,20 +1934,20 @@ State 114
 
 State 115
 
-    7 func: FUN NAME TYPE LPAREN argdecls RPAREN LCURL vars stmts RCURL â€¢
+    7 func: FUN NAME TYPE LPAREN argdecls RPAREN LCURL vars stmts RCURL •
 
     $default  reduce using rule 7 (func)
 
 
 State 116
 
-   17 stmt: IF LPAREN exp RPAREN LCURL stmts RCURL ELSE LCURL stmts RCURL â€¢
+   17 stmt: IF LPAREN exp RPAREN LCURL stmts RCURL ELSE LCURL stmts RCURL •
 
     $default  reduce using rule 17 (stmt)
 
 
 State 117
 
-   19 stmt: WHILE LPAREN exp RPAREN LCURL stmts RCURL OTHERWISE LCURL stmts RCURL â€¢
+   19 stmt: WHILE LPAREN exp RPAREN LCURL stmts RCURL OTHERWISE LCURL stmts RCURL •
 
     $default  reduce using rule 19 (stmt)
