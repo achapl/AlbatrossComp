@@ -62,7 +62,7 @@ static void intrinsic(char * name, list * args, S_table global_types, S_table fu
 }
 
 void mips_astExpr(exp_node * e, S_table global_types, S_table function_rets, frame * f) {
-    UNUSED(global_types);
+    UNUSED(global_types); 
     UNUSED(function_rets);
     UNUSED(f);
     if(!e) return;
