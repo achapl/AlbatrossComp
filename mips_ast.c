@@ -320,7 +320,22 @@ void mips_astStmt(stmt_node * s, S_table global_types, S_table function_rets, fr
             break;
         }
         case while_stmt: {
-            assert(0);
+            int whileJump = currJump;
+            printf("jump: %d\n", whileJump);
+            emitLabel("WHILE_START%d", "WHILE - Start of while loop", whileJump);
+            mips_astExpr(s->data.while_ops.cond, global_types, function_rets, f);
+            pop0();
+            emitInstruction("li $v1, 0", "WHILE_STMT - Get 1 (true) to compare to");
+            emitInstruction("beq $v0, $v1, WHILE_END%d", "WHILE_STMT - Test condition", whileJump+1);
+            printf("AST WHILE INSIDE\n");
+            mips_astStmts(s->data.while_ops.body, global_types, function_rets, f);
+            printf("AST WHILE INSIDE END\n");
+            emitInstruction("j WHILE_START%d", "WHILE_STMT - Loop back to top of while loop", whileJump);
+            emitLabel("WHILE_END%d", " WHILE_STMT - End of loop", whileJump+1);
+            printf("jump: %d\n", whileJump);
+            currJump += 2; // Two labels used
+
+            break;
         }
         case repeat_stmt: {
             assert(0);
@@ -329,11 +344,11 @@ void mips_astStmt(stmt_node * s, S_table global_types, S_table function_rets, fr
             assert(0);
         }
         case call_stmt: {
-            assert(0);
+            //assert(0);
             break;
         }
         case intrinsic_stmt: {
-             intrinsic(s->data.intrinsic_ops.name, s->data.intrinsic_ops.args, global_types, function_rets, f);
+            intrinsic(s->data.intrinsic_ops.name, s->data.intrinsic_ops.args, global_types, function_rets, f);
              break;
          }
         default:

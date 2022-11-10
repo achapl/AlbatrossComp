@@ -46,7 +46,6 @@ void transformExpr(exp_node * e, S_table global_types, S_table function_rets, fr
             break;
         }
         case call_exp: {
-            printf("HERE4!");
             break;
         }
         case unop_exp: {
@@ -77,10 +76,15 @@ void transformStmts(list * l, S_table globals_types, S_table function_rets, fram
                 break;
             }
             case while_stmt: {
-                // list * next = l->next;
-                // HINT : s->kind = if_stmt;
-                // l.next = // new ast node
-                // newASTNode->next = next;
+                if (s->data.while_ops.otherwise != NULL) {
+                    list *next = l->next;
+                    s->kind = if_stmt;
+                    l->next = ListAddLast(IfNode(s->data.while_ops.cond, ListAddLast(
+                                                         WhileNode(s->data.while_ops.cond, s->data.while_ops.body, NULL), s->data.while_ops.body),
+                                                 s->data.while_ops.otherwise), NULL);// new ast node
+                    l->next->next = next;
+                }
+                transformStmts(s->data.while_ops.body, globals_types, function_rets, f);
                 break;
             }
             case repeat_stmt: {
@@ -147,6 +151,7 @@ void transformFunctions(list * l, S_table global_types, S_table function_ret_typ
 }
 
 void transform(program * p, S_table global_types, S_table function_rets, S_table frames) {
+
     transformVariables(p->variables, global_types, function_rets, NULL);
     transformFunctions(p->functions, global_types, function_rets, frames);
     transformStmts(p->statements, global_types, function_rets, NULL);

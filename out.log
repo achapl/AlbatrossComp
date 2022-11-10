@@ -1,71 +1,34 @@
 rm -f albatrosscc lex.yy.c y.tab.c y.tab.h y.output *.o
-cc -Wall -Wextra -Werror -std=c17 -Wpedantic -O0  -g -c table.c
-cc -Wall -Wextra -Werror -std=c17 -Wpedantic -O0  -g -c symbol.c
-cc -Wall -Wextra -Werror -std=c17 -Wpedantic -O0  -g -c ast.c
+cc -Wall -Wextra -Werror -std=c17 -Wpedantic -O0 -fsanitize=address -g -c table.c
+cc -Wall -Wextra -Werror -std=c17 -Wpedantic -O0 -fsanitize=address -g -c symbol.c
+cc -Wall -Wextra -Werror -std=c17 -Wpedantic -O0 -fsanitize=address -g -c ast.c
 yacc -o y.tab.c -dv parser.y
 echo "y.tab.h was created at the same time as y.tab.c"
 y.tab.h was created at the same time as y.tab.c
-cc -Wall -Wextra -Werror -std=c17 -Wpedantic -O0  -g -c semantic_analysis_symbols.c
-cc -Wall -Wextra -Werror -std=c17 -Wpedantic -O0  -g -c main.c
+cc -Wall -Wextra -Werror -std=c17 -Wpedantic -O0 -fsanitize=address -g -c semantic_analysis_symbols.c
+cc -Wall -Wextra -Werror -std=c17 -Wpedantic -O0 -fsanitize=address -g -c main.c
 lex lexer.lex
-cc -O0  -g -c lex.yy.c
-cc -Wall -Wextra -Werror -std=c17 -Wpedantic -O0  -g -c y.tab.c
-cc -Wall -Wextra -Werror -std=c17 -Wpedantic -O0  -g -c semantic_analysis_types.c
-cc -Wall -Wextra -Werror -std=c17 -Wpedantic -O0  -g -c frames.c
-cc -Wall -Wextra -Werror -std=c17 -Wpedantic -O0  -g -c print_ast.c
-cc -Wall -Wextra -Werror -std=c17 -Wpedantic -O0  -g -c transform.c
-cc -Wall -Wextra -Werror -std=c17 -Wpedantic -O0  -g -c mips_ast.c
-cc -Wall -Wextra -Werror -std=c17 -Wpedantic -O0  -g -o albatrosscc main.o lex.yy.o y.tab.o symbol.o table.o ast.o semantic_analysis_types.o semantic_analysis_symbols.o frames.o print_ast.o transform.o mips_ast.o
-Running [42mpositive test[0m 01-simple/pass1.albatross	[42mCOMPILE OK in 124ms [0m	 [42mRUN OK in 677ms[0m	 [42mDIFF OK[0m	
-Running [42mpositive test[0m 01-simple/pass2.albatross	[42mCOMPILE OK in 131ms [0m	 [42mRUN OK in 689ms[0m	 [42mDIFF OK[0m	
-Running [42mpositive test[0m 01-simple/pass3.albatross	[42mCOMPILE OK in 109ms [0m	 [42mRUN OK in 685ms[0m	 [42mDIFF OK[0m	
-Running [42mpositive test[0m 01-simple/pass4.albatross	[42mCOMPILE OK in 109ms [0m	 [42mRUN OK in 674ms[0m	 [42mDIFF OK[0m	
-[42m                   TEST 01-simple PASSING                [0m
-[42m                   TEST 01-simple PASSING                [0m
-[42m                   TEST 01-simple PASSING                [0m
-Running [42mpositive test[0m 02-exprs/pass1.albatross	[42mCOMPILE OK in 94ms [0m	 [42mRUN OK in 540ms[0m	 [42mDIFF OK[0m	
-Running [42mpositive test[0m 02-exprs/pass2.albatross	[42mCOMPILE OK in 94ms [0m	 [42mRUN OK in 561ms[0m	 [42mDIFF OK[0m	
-Running [42mpositive test[0m 02-exprs/pass3.albatross	[42mCOMPILE OK in 94ms [0m	 [42mRUN OK in 512ms[0m	 [42mDIFF OK[0m	
-Running [42mpositive test[0m 02-exprs/pass4.albatross	[42mCOMPILE OK in 90ms [0m	 [42mRUN OK in 549ms[0m	 [42mDIFF OK[0m	
-Running [42mpositive test[0m 02-exprs/pass5.albatross	[42mCOMPILE OK in 110ms [0m	 [42mRUN OK in 532ms[0m	 [42mDIFF OK[0m	
-Running [42mpositive test[0m 02-exprs/pass6.albatross	[42mCOMPILE OK in 75ms [0m	 [42mRUN OK in 544ms[0m	 [42mDIFF OK[0m	
-Running [42mpositive test[0m 02-exprs/pass7.albatross	[42mCOMPILE OK in 95ms [0m	 [42mRUN OK in 582ms[0m	 [42mDIFF OK[0m	
-Running [42mpositive test[0m 02-exprs/pass8.albatross	[42mCOMPILE OK in 93ms [0m	 [42mRUN OK in 689ms[0m	 [42mDIFF OK[0m	
-Running [42mpositive test[0m 02-exprs/pass9.albatross	[42mCOMPILE OK in 109ms [0m	 [42mRUN OK in 702ms[0m	 [42mDIFF OK[0m	
-[42m                   TEST 02-exprs PASSING                [0m
-[42m                   TEST 02-exprs PASSING                [0m
-[42m                   TEST 02-exprs PASSING                [0m
-Running [42mpositive test[0m 03-div-rem-mult/pass1.albatross	[42mCOMPILE OK in 110ms [0m	 [42mRUN OK in 562ms[0m	 [42mDIFF OK[0m	
-Running [42mpositive test[0m 03-div-rem-mult/pass2.albatross	[42mCOMPILE OK in 74ms [0m	 [42mRUN OK in 534ms[0m	 [42mDIFF OK[0m	
-Running [42mpositive test[0m 03-div-rem-mult/pass3.albatross	[42mCOMPILE OK in 111ms [0m	 [42mRUN OK in 560ms[0m	 [42mDIFF OK[0m	
-Running [42mpositive test[0m 03-div-rem-mult/pass4.albatross	[42mCOMPILE OK in 91ms [0m	 [42mRUN OK in 756ms[0m	 [42mDIFF OK[0m	
-Running [42mpositive test[0m 03-div-rem-mult/pass5.albatross	[42mCOMPILE OK in 123ms [0m	 [42mRUN OK in 768ms[0m	 [42mDIFF OK[0m	
-[42m                   TEST 03-div-rem-mult PASSING                [0m
-[42m                   TEST 03-div-rem-mult PASSING                [0m
-[42m                   TEST 03-div-rem-mult PASSING                [0m
-Running [42mpositive test[0m 04-if/pass1.albatross	[42mCOMPILE OK in 70ms [0m	 [42mRUN OK in 548ms[0m	 [42mDIFF OK[0m	
-Running [42mpositive test[0m 04-if/pass10.albatross	[42mCOMPILE OK in 124ms [0m	 [42mRUN OK in 1684ms[0m	 [42mDIFF OK[0m	
-Running [42mpositive test[0m 04-if/pass2.albatross	[42mCOMPILE OK in 89ms [0m	 [42mRUN OK in 573ms[0m	 [41;37mDIFF FAIL[0m
-0a1
-> 473
-Running [42mpositive test[0m 04-if/pass3.albatross	[42mCOMPILE OK in 112ms [0m	 [42mRUN OK in 578ms[0m	 [42mDIFF OK[0m	
-Running [42mpositive test[0m 04-if/pass4.albatross	[42mCOMPILE OK in 78ms [0m	 [42mRUN OK in 538ms[0m	 [41;37mDIFF FAIL[0m
-1c1
-< 
----
-> 473
-Running [42mpositive test[0m 04-if/pass5.albatross	[42mCOMPILE OK in 116ms [0m	 [42mRUN OK in 524ms[0m	 [41;37mDIFF FAIL[0m
-1c1
-< 
----
-> 473
-Running [42mpositive test[0m 04-if/pass6.albatross	[42mCOMPILE OK in 94ms [0m	 [42mRUN OK in 553ms[0m	 [42mDIFF OK[0m	
-Running [42mpositive test[0m 04-if/pass7.albatross	[42mCOMPILE OK in 95ms [0m	 [41;37mRUN FAIL in 536ms[0m
-473
-Running [42mpositive test[0m 04-if/pass8.albatross	[42mCOMPILE OK in 92ms [0m	 [41;37mRUN FAIL in 517ms[0m
-473
-Running [42mpositive test[0m 04-if/pass9.albatross	[42mCOMPILE OK in 125ms [0m	 [42mRUN OK in 1757ms[0m	 [42mDIFF OK[0m	
-[41;37m                   TEST 04-if FAILING                  [0m
-[41;37m                   TEST 04-if FAILING                  [0m
-[41;37m                   TEST 04-if FAILING                  [0m
-Running [42mpositive test[0m 05-logical/pass1.albatross	[42mCOMPILE OK in 93ms [0m	
+cc -O0 -fsanitize=address -g -c lex.yy.c
+cc -Wall -Wextra -Werror -std=c17 -Wpedantic -O0 -fsanitize=address -g -c y.tab.c
+cc -Wall -Wextra -Werror -std=c17 -Wpedantic -O0 -fsanitize=address -g -c semantic_analysis_types.c
+cc -Wall -Wextra -Werror -std=c17 -Wpedantic -O0 -fsanitize=address -g -c frames.c
+cc -Wall -Wextra -Werror -std=c17 -Wpedantic -O0 -fsanitize=address -g -c print_ast.c
+cc -Wall -Wextra -Werror -std=c17 -Wpedantic -O0 -fsanitize=address -g -c transform.c
+cc -Wall -Wextra -Werror -std=c17 -Wpedantic -O0 -fsanitize=address -g -c mips_ast.c
+cc -Wall -Wextra -Werror -std=c17 -Wpedantic -O0 -fsanitize=address -g -o albatrosscc main.o lex.yy.o y.tab.o symbol.o table.o ast.o semantic_analysis_types.o semantic_analysis_symbols.o frames.o print_ast.o transform.o mips_ast.o
+Running [42mpositive test[0m 01-simple/pass1.albatross	[41;37mCOMPILE FAIL in 68ms [0m
+./runtests.sh: line 36: ./albatrosscc: No such file or directory
+Running [42mpositive test[0m 01-simple/pass2.albatross	[41;37mCOMPILE FAIL in 120ms [0m
+./runtests.sh: line 36: ./albatrosscc: No such file or directory
+Running [42mpositive test[0m 01-simple/pass3.albatross	[41;37mCOMPILE FAIL in 97ms [0m
+./runtests.sh: line 36: ./albatrosscc: No such file or directory
+Running [42mpositive test[0m 01-simple/pass4.albatross	[41;37mCOMPILE FAIL in 80ms [0m
+./runtests.sh: line 36: ./albatrosscc: No such file or directory
+[41;37m                   TEST 01-simple FAILING                  [0m
+[41;37m                   TEST 01-simple FAILING                  [0m
+[41;37m                   TEST 01-simple FAILING                  [0m
+Running [42mpositive test[0m 02-exprs/pass1.albatross	[41;37mCOMPILE FAIL in 79ms [0m
+./runtests.sh: line 36: ./albatrosscc: No such file or directory
+Running [42mpositive test[0m 02-exprs/pass2.albatross	[41;37mCOMPILE FAIL in 116ms [0m
+./runtests.sh: line 36: ./albatrosscc: No such file or directory
+Running [42mpositive test[0m 02-exprs/pass3.albatross	
