@@ -14,7 +14,7 @@ static int currJump = 0;
 
 static FILE * out;
 
-// Push frpm register v0
+// Push from register v0
 static void push0();
 
 // Push from register v1
