@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <string.h>
 #include "util.h"
 #include "semantic_analysis_symbols.h"
 
@@ -26,6 +27,7 @@ void symbolResolutionExpr(exp_node * e, S_table global_types, S_table function_r
             return;
         }
         case call_exp: {
+
             if (!S_look(function_rets, S_Symbol(e->data.call_ops.name))) {
                 fprintf(stderr,"Called function \"%s\" without declaring it.\n", e->data.call_ops.name);
                 exit(3);
@@ -209,12 +211,14 @@ static void registerIntrinsics(S_table function_rets) {
 
     fundec_node * f;
     fundec_node * g;
+    fundec_node * h;
 
     f = FunDecNode("exit", VoidTyNode(), ListAddFirst(Param(IntTyNode(), "n"), NULL), NULL, NULL);
     g = FunDecNode("printint", VoidTyNode(), ListAddFirst(Param(IntTyNode(), ""), NULL), NULL, NULL);
-
+    h = FunDecNode("printstring", VoidTyNode(), ListAddFirst(Param(StringTyNode(), ""), NULL), NULL, NULL);
     S_enter(function_rets, S_Symbol("exit"), f);
     S_enter( function_rets, S_Symbol("printint"), g);
+    S_enter( function_rets, S_Symbol("printstring"), h);
 
 
 

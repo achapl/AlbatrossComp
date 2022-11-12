@@ -58,11 +58,24 @@ static void intrinsic(char * name, list * args, S_table global_types, S_table fu
         emitInstruction("syscall", "PRINTINT perform syscall");
         return;
     }
+
+    if (!strcmp(name, "printstring")) {
+        // Push all args to stack
+        exp_node * strToPrint = (exp_node *) args->head;
+        //strToPrint->data.sval;
+        //emitInstruction("","PRINTSTRING Move string address to stack");
+        // POP and pass to system call
+        //pop0(); // Pop to $v0
+        emitInstruction("la $a0, %s", "PRINTSTRING pass address of string to be printed", strToPrint->data.sval);
+        emitInstruction("li $v0, 4", "PRINTSTRING specify printstring as the syscall to perform");
+        emitInstruction("syscall", "PRINTSTRING perform syscall");
+        return;
+    }
     assert(0);
 }
 
 void mips_astExpr(exp_node * e, S_table global_types, S_table function_rets, frame * f) {
-    UNUSED(global_types); 
+    UNUSED(global_types);
     UNUSED(function_rets);
     UNUSED(f);
     if(!e) return;
@@ -74,7 +87,9 @@ void mips_astExpr(exp_node * e, S_table global_types, S_table function_rets, fra
             break;
         }
         case string_exp: {
-            assert(0);
+            //emitInstruction("la $v0, %s", "astExpr - string_exp: Load string address into v0", e->data.sval);
+            //push0();
+            break;
         }
         case binop_exp: {
             // Recursively evaluate each side of binary operation
@@ -299,9 +314,11 @@ void mips_astStmt(stmt_node * s, S_table global_types, S_table function_rets, fr
     if(!s) return;
     switch(s->kind){
         case assign_stmt: {
-            mips_astExpr(s->data.assign_ops.rhs, global_types, function_rets, f);
-            pop0();
-            emitInstruction("sw $v0, %s", "ASSIGN_STMT - store $v0 on top of stack", s->data.assign_ops.lhs);
+            if (s->data.assign_ops.rhs->kind != string_exp) {
+                mips_astExpr(s->data.assign_ops.rhs, global_types, function_rets, f);
+                pop0();
+                emitInstruction("sw $v0, %s", "ASSIGN_STMT - store $v0 on top of stack", s->data.assign_ops.lhs);
+            }
             break;
         }
         case if_stmt: {
@@ -344,7 +361,7 @@ void mips_astStmt(stmt_node * s, S_table global_types, S_table function_rets, fr
             assert(0);
         }
         case call_stmt: {
-            //assert(0);
+            assert(0);
             break;
         }
         case intrinsic_stmt: {
@@ -378,9 +395,11 @@ void mips_astVariable(vardec_node * node, S_table globals_types, S_table functio
         }
 
         if (strcmp(ty, "int") == 0) {
+            // mips_astExpr(node->init, globals_types, function_rets, f);
+            // pop0();
             emitInstruction("%s:    .%s     %d", "Variable declaration for var %s", node->name, size, node->init->data.ival);
         } else if (strcmp(ty, "string") == 0) {
-            emitInstruction("%s:    .%s     \"%s\"", "Variable declaration for var %s", node->name, size, node->init->data.sval);
+            emitInstruction("%s:    .%s     %s", "Variable declaration for var %s", node->name, size, node->init->data.sval);
         }
     }
 
@@ -488,5 +507,6 @@ void mips_ast(program * p, S_table global_types, S_table function_rets, S_table 
     if (p->statements != NULL) {
         fprintf(out, ".text\n");
     }
+    // TODO: DEBUG FROM HERE
     mips_astStmts(p->statements, global_types, function_rets, NULL);
 }
