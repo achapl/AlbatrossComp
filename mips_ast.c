@@ -322,7 +322,8 @@ void mips_astStmt(stmt_node * s, S_table global_types, S_table function_rets, fr
             break;
         }
         case if_stmt: {
-            int jumpLabelNum = currJump++;
+            int jumpLabelNum = currJump;
+            currJump += 2;
             // Do mips on condition
             mips_astExpr(s->data.if_ops.cond, global_types, function_rets, f);
             // Get result of condition
@@ -333,7 +334,15 @@ void mips_astStmt(stmt_node * s, S_table global_types, S_table function_rets, fr
             // Do mips on statements inside of if
             mips_astStmts(s->data.if_ops.then_stmts, global_types, function_rets, f);
             // Label for skipping last if
+            emitInstruction("j JEND%d", "Jump to end when done with true branch", jumpLabelNum+1);
             emitLabel("JFALSE%d", "Jump to here if 'if' is false", jumpLabelNum);
+
+            // "Else" part
+            if (s->data.if_ops.else_stmts != NULL) {
+                mips_astStmts(s->data.if_ops.else_stmts, global_types, function_rets, f);
+                emitInstruction("j JEND%d", "Jump to end when done with true branch", jumpLabelNum+1);
+            }
+            emitLabel("JEND%d", "Jump to here if 'if' is false", jumpLabelNum+1);
             break;
         }
         case while_stmt: {
@@ -361,7 +370,7 @@ void mips_astStmt(stmt_node * s, S_table global_types, S_table function_rets, fr
             assert(0);
         }
         case call_stmt: {
-            assert(0);
+
             break;
         }
         case intrinsic_stmt: {

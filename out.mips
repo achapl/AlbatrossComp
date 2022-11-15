@@ -1,10 +1,22 @@
 .data
-		cs:    .asciiz     "CS"			# Variable declaration for var %s
-		course:    .word     473			# Variable declaration for var %s
-		uic:    .asciiz     "UIC"			# Variable declaration for var %s
-		year:    .word     2022			# Variable declaration for var %s
-		space:    .asciiz     " "			# Variable declaration for var %s
+		n:    .word     1			# Variable declaration for var %s
 .text
+		li $v0, 1			# astExpr - int_exp: load resulting integer value to push to the stack
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		sw $v0, n			# ASSIGN_STMT - store $v0 on top of stack
+		lw $v0, n			# VAR_EXP - Load variable value
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		beq $v0, $zero, JFALSE0			# IF_STMT - Jump to to JFALSE if 'if' is false
 		li $v0, 473			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -12,22 +24,20 @@
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
-		sw $v0, course			# ASSIGN_STMT - store $v0 on top of stack
-		li $v0, 2022			# astExpr - int_exp: load resulting integer value to push to the stack
+		move $a0, $v0			# PRINTINT pass int to be printed
+		li $v0, 1			# PRINTINT specify printint as the syscall to perform
+		syscall			# PRINTINT perform syscall
+		li $v0, 0			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
 		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
-		sw $v0, year			# ASSIGN_STMT - store $v0 on top of stack
-		la $a0, cs			# PRINTSTRING pass address of string to be printed
-		li $v0, 4			# PRINTSTRING specify printstring as the syscall to perform
-		syscall			# PRINTSTRING perform syscall
-		la $a0, space			# PRINTSTRING pass address of string to be printed
-		li $v0, 4			# PRINTSTRING specify printstring as the syscall to perform
-		syscall			# PRINTSTRING perform syscall
-		lw $v0, course			# VAR_EXP - Load variable value
+		sw $v0, n			# ASSIGN_STMT - store $v0 on top of stack
+		j JEND1			# Jump to end when done with true branch
+JFALSE0: # Jump to here if 'if' is false
+		li $v0, 0			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
 		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -37,25 +47,8 @@
 		move $a0, $v0			# PRINTINT pass int to be printed
 		li $v0, 1			# PRINTINT specify printint as the syscall to perform
 		syscall			# PRINTINT perform syscall
-		la $a0, space			# PRINTSTRING pass address of string to be printed
-		li $v0, 4			# PRINTSTRING specify printstring as the syscall to perform
-		syscall			# PRINTSTRING perform syscall
-		la $a0, uic			# PRINTSTRING pass address of string to be printed
-		li $v0, 4			# PRINTSTRING specify printstring as the syscall to perform
-		syscall			# PRINTSTRING perform syscall
-		la $a0, space			# PRINTSTRING pass address of string to be printed
-		li $v0, 4			# PRINTSTRING specify printstring as the syscall to perform
-		syscall			# PRINTSTRING perform syscall
-		lw $v0, year			# VAR_EXP - Load variable value
-		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
-		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
-		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
-		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
-		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
-		sw $zero, ($sp)			# POP0 - clear free space atop stack
-		move $a0, $v0			# PRINTINT pass int to be printed
-		li $v0, 1			# PRINTINT specify printint as the syscall to perform
-		syscall			# PRINTINT perform syscall
+		j JEND1			# Jump to end when done with true branch
+JEND1: # Jump to here if 'if' is false
 		li $v0, 0			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position

@@ -83,15 +83,25 @@ void transformStmts(list * l, S_table globals_types, S_table function_rets, fram
                 break;
             }
             case while_stmt: {
-                if (s->data.while_ops.otherwise != NULL) {
-                    list *next = l->next;
-                    s->kind = if_stmt;
-                    l->next = ListAddLast(IfNode(s->data.while_ops.cond, ListAddLast(
-                                                         WhileNode(s->data.while_ops.cond, s->data.while_ops.body, NULL), s->data.while_ops.body),
-                                                 s->data.while_ops.otherwise), NULL);// new ast node
-                    l->next->next = next;
-                }
+                printf("Here1\n");
+                transformStmts(s->data.while_ops.otherwise, globals_types, function_rets, f);
                 transformStmts(s->data.while_ops.body, globals_types, function_rets, f);
+                if (s->data.while_ops.otherwise != NULL) {
+                    printf("Here2\n");
+                    s->kind = if_stmt;
+                    exp_node * cond = s->data.while_ops.cond;
+                    list * body = s->data.while_ops.body;
+                    list * otherwise = s->data.while_ops.otherwise;
+                    s = IfNode(cond, ListAddLast(
+                                                 WhileNode(cond, body, NULL),NULL),
+                                            otherwise);
+                } else {
+                    printf("Here3\n");
+                    //transformStmts(s->data.while_ops.body, globals_types, function_rets, f);
+                }
+                break;
+            }
+            case intrinsic_stmt: {
                 break;
             }
             case repeat_stmt: {
