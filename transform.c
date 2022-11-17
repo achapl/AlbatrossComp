@@ -69,9 +69,10 @@ void transformStmts(list * l, S_table globals_types, S_table function_rets, fram
 
 
     if (l == NULL) return;
+
     stmt_node * s = l->head;
-    assert(s != NULL); // Same as commented text beneath. Is this Necessary?
-    //if (s == NULL) {printf("S == NULL!\n"); exit(0);}
+    assert(s != NULL);
+
     if(s) {
         switch(s->kind){
             case assign_stmt: {
@@ -97,12 +98,14 @@ void transformStmts(list * l, S_table globals_types, S_table function_rets, fram
                 break;
             }
             case intrinsic_stmt: {
+
                 break;
             }
             case repeat_stmt: {
                 break;
             }
             case ret_stmt: {
+                transformExpr(s->data.ret_exp, globals_types, function_rets, f);
                 // if top level, (not in func), replace with intrinsic call "exit"
                 if (f == NULL) {
                     exp_node * ret = s->data.ret_exp;
@@ -113,6 +116,14 @@ void transformStmts(list * l, S_table globals_types, S_table function_rets, fram
                 break;
             }
             case call_stmt: {
+
+                // Transform Expressions
+                list * l = s->data.call_ops.args;
+                while(l != NULL) {
+                    transformExpr(l->head, globals_types, function_rets, f);
+                    l = l->next;
+                }
+
                 if (!strcmp("exit", s->data.call_ops.name)) {
                     list * args = s->data.call_ops.args;
                     char * name = s->data.call_ops.name; // name = "exit"
@@ -120,7 +131,7 @@ void transformStmts(list * l, S_table globals_types, S_table function_rets, fram
                     s->data.intrinsic_ops.name = name;
                     s->data.intrinsic_ops.args = args;
                 }
-
+                else
                 if (!strcmp("printint", s->data.call_ops.name)) {
                     list * args = s->data.call_ops.args;
                     char * name = s->data.call_ops.name; // name = "printint"
@@ -128,7 +139,7 @@ void transformStmts(list * l, S_table globals_types, S_table function_rets, fram
                     s->data.intrinsic_ops.name = name;
                     s->data.intrinsic_ops.args = args;
                 }
-
+                else
                 if (!strcmp("printstring", s->data.call_ops.name)) {
                     list * args = s->data.call_ops.args;
                     char * name = s->data.call_ops.name; // name = "printstring"
@@ -164,6 +175,25 @@ void transformVariables(list * l, S_table global_types, S_table function_rets, f
 void transformFunction(fundec_node * fundec, S_table globals, S_table functions_rets, frame * f) {
     UNUSED(fundec);
     transformStmts(fundec->stmts, globals, functions_rets, f);
+
+    // For void functions, add a return node
+    if (!strcmp("void", typeToStr(fundec->type))){
+       //TODO:if works, delete commented code
+       list * last = fundec->stmts;
+       if (last != NULL) {
+           while (last != NULL && last->next != NULL) {
+               last = last->next;
+           }
+       }
+       // Add return as last statement of a void function
+       // Check first the last statement is not already a return statement
+       if (last != NULL) {
+           if (((stmt_node *) last->head)->kind == ret_stmt) {
+               return;
+           }
+       }
+        fundec->stmts = ListAddLast(RetNode(NULL), fundec->stmts );
+    }
 }
 
 void transformFunctions(list * l, S_table global_types, S_table function_ret_types, S_table frames) {
@@ -198,7 +228,6 @@ void transform(program * p, S_table global_types, S_table function_rets, S_table
             p->statements = glob_var_inits;
         }
     }
-
     transformFunctions(p->functions, global_types, function_rets, frames);
     transformStmts(p->statements, global_types, function_rets, NULL);
 }

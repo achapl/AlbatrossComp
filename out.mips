@@ -1,28 +1,223 @@
+.data
+		_stringConstant7:    .asciiz     "bQRs0xiXDkag"			# Variable declaration for var %s
+		_stringConstant6:    .asciiz     "HkbbGMtvVXqjmIOIj"			# Variable declaration for var %s
+		_stringConstant5:    .asciiz     "L6tFxzZJ8eCM"			# Variable declaration for var %s
+		_stringConstant4:    .asciiz     "i7ZSJn72"			# Variable declaration for var %s
+		_stringConstant3:    .asciiz     "Ck0oxx5qwtOZAzbQn"			# Variable declaration for var %s
+		_stringConstant2:    .asciiz     "KMl93zQAX9J"			# Variable declaration for var %s
+		_stringConstant1:    .asciiz     "xTHB39KKeF4pbwiWNe"			# Variable declaration for var %s
+		_stringConstant0:    .asciiz     "wXL6FiS9O71eeZi2"			# Variable declaration for var %s
+		s0:    .asciiz     "ZMPp"			# Variable declaration for var %s
+		s1:    .asciiz     "T"			# Variable declaration for var %s
+		s2:    .asciiz     "9gMbWpVyD7l9WIK"			# Variable declaration for var %s
+		s3:    .asciiz     "BhCEKg9239KzXIw"			# Variable declaration for var %s
+		s4:    .asciiz     "MsP"			# Variable declaration for var %s
+		s5:    .asciiz     "ImucrdKC0rhcqk5kl"			# Variable declaration for var %s
+		s6:    .asciiz     "2LZ4f0m2pI0"			# Variable declaration for var %s
+		s7:    .asciiz     "i3YSIQ18thIvx"			# Variable declaration for var %s
+		s8:    .asciiz     "egwYnSxFA462aBx"			# Variable declaration for var %s
+		s9:    .asciiz     "4uDTEsTuwTYt"			# Variable declaration for var %s
 .text
-		li $v0, 400			# astExpr - int_exp: load resulting integer value to push to the stack
+		move $v0, $fp			# Func Call - Make frame, load $fp to push curr frame pointer
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
 		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
-		li $v0, 73			# astExpr - int_exp: load resulting integer value to push to the stack
+		move $fp, $sp			# Func Call - Make frame, move frame pointer to stack pointer
+		add $fp, $fp, 0			# Func Call - Make frame, Adjust frame ptr to end of args
+		jal fun41248			# Jump and link to callee function
+		move $v0, $fp			# Func Call - Make frame, load $fp to push curr frame pointer
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
 		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
-		addi $sp, $sp, 4			# POP1 - adjust stack pointer by register size to pt to top stack value
-		lw $v1, ($sp)			# POP1 - store $v0 on top of stack
-		sw $zero, ($sp)			# POP1 - clear free space atop stack
+		move $fp, $sp			# Func Call - Make frame, move frame pointer to stack pointer
+		add $fp, $fp, 0			# Func Call - Make frame, Adjust frame ptr to end of args
+		jal fun34336			# Jump and link to callee function
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
-		or $v0, $v0, $v1			# BINOP_EXP BOR_OP - Or the two operands
+		move $a0, $v0			# PRINTSTRING pass address of string to be printed
+		li $v0, 4			# PRINTSTRING specify printstring as the syscall to perform
+		syscall			# PRINTSTRING perform syscall
+		move $v0, $fp			# Func Call - Make frame, load $fp to push curr frame pointer
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
 		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		move $fp, $sp			# Func Call - Make frame, move frame pointer to stack pointer
+		add $fp, $fp, 0			# Func Call - Make frame, Adjust frame ptr to end of args
+		jal fun15480			# Jump and link to callee function
+		move $v0, $fp			# Func Call - Make frame, load $fp to push curr frame pointer
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		move $fp, $sp			# Func Call - Make frame, move frame pointer to stack pointer
+		add $fp, $fp, 0			# Func Call - Make frame, Adjust frame ptr to end of args
+		jal fun24209			# Jump and link to callee function
 		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
 		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
 		sw $zero, ($sp)			# POP0 - clear free space atop stack
-		move $a0, $v0			# PRINTINT pass int to be printed
-		li $v0, 1			# PRINTINT specify printint as the syscall to perform
-		syscall			# PRINTINT perform syscall
+		move $a0, $v0			# PRINTSTRING pass address of string to be printed
+		li $v0, 4			# PRINTSTRING specify printstring as the syscall to perform
+		syscall			# PRINTSTRING perform syscall
+		move $v0, $fp			# Func Call - Make frame, load $fp to push curr frame pointer
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		move $fp, $sp			# Func Call - Make frame, move frame pointer to stack pointer
+		add $fp, $fp, 0			# Func Call - Make frame, Adjust frame ptr to end of args
+		jal fun1921			# Jump and link to callee function
+		move $v0, $fp			# Func Call - Make frame, load $fp to push curr frame pointer
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		move $fp, $sp			# Func Call - Make frame, move frame pointer to stack pointer
+		add $fp, $fp, 0			# Func Call - Make frame, Adjust frame ptr to end of args
+		jal fun41279			# Jump and link to callee function
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $a0, $v0			# PRINTSTRING pass address of string to be printed
+		li $v0, 4			# PRINTSTRING specify printstring as the syscall to perform
+		syscall			# PRINTSTRING perform syscall
+		move $v0, $fp			# Func Call - Make frame, load $fp to push curr frame pointer
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		move $fp, $sp			# Func Call - Make frame, move frame pointer to stack pointer
+		add $fp, $fp, 0			# Func Call - Make frame, Adjust frame ptr to end of args
+		jal fun54200			# Jump and link to callee function
+		move $v0, $fp			# Func Call - Make frame, load $fp to push curr frame pointer
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		move $fp, $sp			# Func Call - Make frame, move frame pointer to stack pointer
+		add $fp, $fp, 0			# Func Call - Make frame, Adjust frame ptr to end of args
+		jal fun55625			# Jump and link to callee function
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $a0, $v0			# PRINTSTRING pass address of string to be printed
+		li $v0, 4			# PRINTSTRING specify printstring as the syscall to perform
+		syscall			# PRINTSTRING perform syscall
+		move $v0, $fp			# Func Call - Make frame, load $fp to push curr frame pointer
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		move $fp, $sp			# Func Call - Make frame, move frame pointer to stack pointer
+		add $fp, $fp, 0			# Func Call - Make frame, Adjust frame ptr to end of args
+		jal fun10950			# Jump and link to callee function
+		move $v0, $fp			# Func Call - Make frame, load $fp to push curr frame pointer
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		move $fp, $sp			# Func Call - Make frame, move frame pointer to stack pointer
+		add $fp, $fp, 0			# Func Call - Make frame, Adjust frame ptr to end of args
+		jal fun55625			# Jump and link to callee function
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $a0, $v0			# PRINTSTRING pass address of string to be printed
+		li $v0, 4			# PRINTSTRING specify printstring as the syscall to perform
+		syscall			# PRINTSTRING perform syscall
+		move $v0, $fp			# Func Call - Make frame, load $fp to push curr frame pointer
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		move $fp, $sp			# Func Call - Make frame, move frame pointer to stack pointer
+		add $fp, $fp, 0			# Func Call - Make frame, Adjust frame ptr to end of args
+		jal fun15480			# Jump and link to callee function
+		move $v0, $fp			# Func Call - Make frame, load $fp to push curr frame pointer
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		move $fp, $sp			# Func Call - Make frame, move frame pointer to stack pointer
+		add $fp, $fp, 0			# Func Call - Make frame, Adjust frame ptr to end of args
+		jal fun41279			# Jump and link to callee function
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $a0, $v0			# PRINTSTRING pass address of string to be printed
+		li $v0, 4			# PRINTSTRING specify printstring as the syscall to perform
+		syscall			# PRINTSTRING perform syscall
+		move $v0, $fp			# Func Call - Make frame, load $fp to push curr frame pointer
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		move $fp, $sp			# Func Call - Make frame, move frame pointer to stack pointer
+		add $fp, $fp, 0			# Func Call - Make frame, Adjust frame ptr to end of args
+		jal fun54200			# Jump and link to callee function
+		move $v0, $fp			# Func Call - Make frame, load $fp to push curr frame pointer
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		move $fp, $sp			# Func Call - Make frame, move frame pointer to stack pointer
+		add $fp, $fp, 0			# Func Call - Make frame, Adjust frame ptr to end of args
+		jal fun55791			# Jump and link to callee function
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $a0, $v0			# PRINTSTRING pass address of string to be printed
+		li $v0, 4			# PRINTSTRING specify printstring as the syscall to perform
+		syscall			# PRINTSTRING perform syscall
+		move $v0, $fp			# Func Call - Make frame, load $fp to push curr frame pointer
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		move $fp, $sp			# Func Call - Make frame, move frame pointer to stack pointer
+		add $fp, $fp, 0			# Func Call - Make frame, Adjust frame ptr to end of args
+		jal fun63106			# Jump and link to callee function
+		move $v0, $fp			# Func Call - Make frame, load $fp to push curr frame pointer
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		move $fp, $sp			# Func Call - Make frame, move frame pointer to stack pointer
+		add $fp, $fp, 0			# Func Call - Make frame, Adjust frame ptr to end of args
+		jal fun17739			# Jump and link to callee function
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $a0, $v0			# PRINTSTRING pass address of string to be printed
+		li $v0, 4			# PRINTSTRING specify printstring as the syscall to perform
+		syscall			# PRINTSTRING perform syscall
+		move $v0, $fp			# Func Call - Make frame, load $fp to push curr frame pointer
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		move $fp, $sp			# Func Call - Make frame, move frame pointer to stack pointer
+		add $fp, $fp, 0			# Func Call - Make frame, Adjust frame ptr to end of args
+		jal fun41248			# Jump and link to callee function
+		move $v0, $fp			# Func Call - Make frame, load $fp to push curr frame pointer
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		move $fp, $sp			# Func Call - Make frame, move frame pointer to stack pointer
+		add $fp, $fp, 0			# Func Call - Make frame, Adjust frame ptr to end of args
+		jal fun40574			# Jump and link to callee function
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $a0, $v0			# PRINTSTRING pass address of string to be printed
+		li $v0, 4			# PRINTSTRING specify printstring as the syscall to perform
+		syscall			# PRINTSTRING perform syscall
+		move $v0, $fp			# Func Call - Make frame, load $fp to push curr frame pointer
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		move $fp, $sp			# Func Call - Make frame, move frame pointer to stack pointer
+		add $fp, $fp, 0			# Func Call - Make frame, Adjust frame ptr to end of args
+		jal fun15480			# Jump and link to callee function
+		move $v0, $fp			# Func Call - Make frame, load $fp to push curr frame pointer
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		move $fp, $sp			# Func Call - Make frame, move frame pointer to stack pointer
+		add $fp, $fp, 0			# Func Call - Make frame, Adjust frame ptr to end of args
+		jal fun40318			# Jump and link to callee function
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $a0, $v0			# PRINTSTRING pass address of string to be printed
+		li $v0, 4			# PRINTSTRING specify printstring as the syscall to perform
+		syscall			# PRINTSTRING perform syscall
 		li $v0, 0			# astExpr - int_exp: load resulting integer value to push to the stack
 		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
 		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
@@ -33,3 +228,523 @@
 		move $a0, $v0			# EXIT pass return code
 		li $v0, 17			# EXIT specify exit2 as the syscall to perform
 		syscall			# EXIT perform syscall
+fun24209: # Func Name
+		move $v0, $zero			# Function Callee - make frame, make room for args, Initialize by setting $v0 zero before pushing
+		move $v0, $ra			# Function Callee - make frame, push ret address to stack
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		la $v0, _stringConstant0			# VAR_EXP - Load variable value
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		addi $sp, $sp, 4			# POP1 - adjust stack pointer by register size to pt to top stack value
+		lw $v1, ($sp)			# POP1 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP1 - clear free space atop stack
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $ra, $v0			# Function - Return, pop return address to $ra
+		move $sp, $fp			# Function - Return, set stack pointer to frame ptr
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $fp, $v0			# Function - Return, Set $fp to prev frame ptr 4 after curr fp
+		sw $v1, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		jr $ra			# Function - Return, final jump
+fun61583: # Func Name
+		move $v0, $zero			# Function Callee - make frame, make room for args, Initialize by setting $v0 zero before pushing
+		move $v0, $ra			# Function Callee - make frame, push ret address to stack
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		la $v0, _stringConstant1			# VAR_EXP - Load variable value
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $a0, $v0			# PRINTSTRING pass address of string to be printed
+		li $v0, 4			# PRINTSTRING specify printstring as the syscall to perform
+		syscall			# PRINTSTRING perform syscall
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $ra, $v0			# Function - Return, pop return address to $ra
+		move $sp, $fp			# Function - Return, set stack pointer to frame ptr
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $fp, $v0			# Function - Return, Set $fp to prev frame ptr 4 after curr fp
+		jr $ra			# Function - Return, final jump
+fun40574: # Func Name
+		move $v0, $zero			# Function Callee - make frame, make room for args, Initialize by setting $v0 zero before pushing
+		move $v0, $ra			# Function Callee - make frame, push ret address to stack
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		la $v0, s6			# VAR_EXP - Load variable value
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		addi $sp, $sp, 4			# POP1 - adjust stack pointer by register size to pt to top stack value
+		lw $v1, ($sp)			# POP1 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP1 - clear free space atop stack
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $ra, $v0			# Function - Return, pop return address to $ra
+		move $sp, $fp			# Function - Return, set stack pointer to frame ptr
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $fp, $v0			# Function - Return, Set $fp to prev frame ptr 4 after curr fp
+		sw $v1, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		jr $ra			# Function - Return, final jump
+fun15604: # Func Name
+		move $v0, $zero			# Function Callee - make frame, make room for args, Initialize by setting $v0 zero before pushing
+		move $v0, $ra			# Function Callee - make frame, push ret address to stack
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		la $v0, s0			# VAR_EXP - Load variable value
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $a0, $v0			# PRINTSTRING pass address of string to be printed
+		li $v0, 4			# PRINTSTRING specify printstring as the syscall to perform
+		syscall			# PRINTSTRING perform syscall
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $ra, $v0			# Function - Return, pop return address to $ra
+		move $sp, $fp			# Function - Return, set stack pointer to frame ptr
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $fp, $v0			# Function - Return, Set $fp to prev frame ptr 4 after curr fp
+		jr $ra			# Function - Return, final jump
+fun34336: # Func Name
+		move $v0, $zero			# Function Callee - make frame, make room for args, Initialize by setting $v0 zero before pushing
+		move $v0, $ra			# Function Callee - make frame, push ret address to stack
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		la $v0, s7			# VAR_EXP - Load variable value
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		addi $sp, $sp, 4			# POP1 - adjust stack pointer by register size to pt to top stack value
+		lw $v1, ($sp)			# POP1 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP1 - clear free space atop stack
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $ra, $v0			# Function - Return, pop return address to $ra
+		move $sp, $fp			# Function - Return, set stack pointer to frame ptr
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $fp, $v0			# Function - Return, Set $fp to prev frame ptr 4 after curr fp
+		sw $v1, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		jr $ra			# Function - Return, final jump
+fun15480: # Func Name
+		move $v0, $zero			# Function Callee - make frame, make room for args, Initialize by setting $v0 zero before pushing
+		move $v0, $ra			# Function Callee - make frame, push ret address to stack
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		la $v0, _stringConstant2			# VAR_EXP - Load variable value
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $a0, $v0			# PRINTSTRING pass address of string to be printed
+		li $v0, 4			# PRINTSTRING specify printstring as the syscall to perform
+		syscall			# PRINTSTRING perform syscall
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $ra, $v0			# Function - Return, pop return address to $ra
+		move $sp, $fp			# Function - Return, set stack pointer to frame ptr
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $fp, $v0			# Function - Return, Set $fp to prev frame ptr 4 after curr fp
+		jr $ra			# Function - Return, final jump
+fun55625: # Func Name
+		move $v0, $zero			# Function Callee - make frame, make room for args, Initialize by setting $v0 zero before pushing
+		move $v0, $ra			# Function Callee - make frame, push ret address to stack
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		la $v0, _stringConstant3			# VAR_EXP - Load variable value
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		addi $sp, $sp, 4			# POP1 - adjust stack pointer by register size to pt to top stack value
+		lw $v1, ($sp)			# POP1 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP1 - clear free space atop stack
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $ra, $v0			# Function - Return, pop return address to $ra
+		move $sp, $fp			# Function - Return, set stack pointer to frame ptr
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $fp, $v0			# Function - Return, Set $fp to prev frame ptr 4 after curr fp
+		sw $v1, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		jr $ra			# Function - Return, final jump
+fun10950: # Func Name
+		move $v0, $zero			# Function Callee - make frame, make room for args, Initialize by setting $v0 zero before pushing
+		move $v0, $ra			# Function Callee - make frame, push ret address to stack
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		la $v0, s6			# VAR_EXP - Load variable value
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $a0, $v0			# PRINTSTRING pass address of string to be printed
+		li $v0, 4			# PRINTSTRING specify printstring as the syscall to perform
+		syscall			# PRINTSTRING perform syscall
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $ra, $v0			# Function - Return, pop return address to $ra
+		move $sp, $fp			# Function - Return, set stack pointer to frame ptr
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $fp, $v0			# Function - Return, Set $fp to prev frame ptr 4 after curr fp
+		jr $ra			# Function - Return, final jump
+fun17739: # Func Name
+		move $v0, $zero			# Function Callee - make frame, make room for args, Initialize by setting $v0 zero before pushing
+		move $v0, $ra			# Function Callee - make frame, push ret address to stack
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		la $v0, _stringConstant4			# VAR_EXP - Load variable value
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		addi $sp, $sp, 4			# POP1 - adjust stack pointer by register size to pt to top stack value
+		lw $v1, ($sp)			# POP1 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP1 - clear free space atop stack
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $ra, $v0			# Function - Return, pop return address to $ra
+		move $sp, $fp			# Function - Return, set stack pointer to frame ptr
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $fp, $v0			# Function - Return, Set $fp to prev frame ptr 4 after curr fp
+		sw $v1, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		jr $ra			# Function - Return, final jump
+fun41248: # Func Name
+		move $v0, $zero			# Function Callee - make frame, make room for args, Initialize by setting $v0 zero before pushing
+		move $v0, $ra			# Function Callee - make frame, push ret address to stack
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		la $v0, s1			# VAR_EXP - Load variable value
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $a0, $v0			# PRINTSTRING pass address of string to be printed
+		li $v0, 4			# PRINTSTRING specify printstring as the syscall to perform
+		syscall			# PRINTSTRING perform syscall
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $ra, $v0			# Function - Return, pop return address to $ra
+		move $sp, $fp			# Function - Return, set stack pointer to frame ptr
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $fp, $v0			# Function - Return, Set $fp to prev frame ptr 4 after curr fp
+		jr $ra			# Function - Return, final jump
+fun51657: # Func Name
+		move $v0, $zero			# Function Callee - make frame, make room for args, Initialize by setting $v0 zero before pushing
+		move $v0, $ra			# Function Callee - make frame, push ret address to stack
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		la $v0, s9			# VAR_EXP - Load variable value
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		addi $sp, $sp, 4			# POP1 - adjust stack pointer by register size to pt to top stack value
+		lw $v1, ($sp)			# POP1 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP1 - clear free space atop stack
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $ra, $v0			# Function - Return, pop return address to $ra
+		move $sp, $fp			# Function - Return, set stack pointer to frame ptr
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $fp, $v0			# Function - Return, Set $fp to prev frame ptr 4 after curr fp
+		sw $v1, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		jr $ra			# Function - Return, final jump
+fun63853: # Func Name
+		move $v0, $zero			# Function Callee - make frame, make room for args, Initialize by setting $v0 zero before pushing
+		move $v0, $ra			# Function Callee - make frame, push ret address to stack
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		la $v0, _stringConstant5			# VAR_EXP - Load variable value
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $a0, $v0			# PRINTSTRING pass address of string to be printed
+		li $v0, 4			# PRINTSTRING specify printstring as the syscall to perform
+		syscall			# PRINTSTRING perform syscall
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $ra, $v0			# Function - Return, pop return address to $ra
+		move $sp, $fp			# Function - Return, set stack pointer to frame ptr
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $fp, $v0			# Function - Return, Set $fp to prev frame ptr 4 after curr fp
+		jr $ra			# Function - Return, final jump
+fun41279: # Func Name
+		move $v0, $zero			# Function Callee - make frame, make room for args, Initialize by setting $v0 zero before pushing
+		move $v0, $ra			# Function Callee - make frame, push ret address to stack
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		la $v0, s8			# VAR_EXP - Load variable value
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		addi $sp, $sp, 4			# POP1 - adjust stack pointer by register size to pt to top stack value
+		lw $v1, ($sp)			# POP1 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP1 - clear free space atop stack
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $ra, $v0			# Function - Return, pop return address to $ra
+		move $sp, $fp			# Function - Return, set stack pointer to frame ptr
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $fp, $v0			# Function - Return, Set $fp to prev frame ptr 4 after curr fp
+		sw $v1, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		jr $ra			# Function - Return, final jump
+fun63106: # Func Name
+		move $v0, $zero			# Function Callee - make frame, make room for args, Initialize by setting $v0 zero before pushing
+		move $v0, $ra			# Function Callee - make frame, push ret address to stack
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		la $v0, s5			# VAR_EXP - Load variable value
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $a0, $v0			# PRINTSTRING pass address of string to be printed
+		li $v0, 4			# PRINTSTRING specify printstring as the syscall to perform
+		syscall			# PRINTSTRING perform syscall
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $ra, $v0			# Function - Return, pop return address to $ra
+		move $sp, $fp			# Function - Return, set stack pointer to frame ptr
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $fp, $v0			# Function - Return, Set $fp to prev frame ptr 4 after curr fp
+		jr $ra			# Function - Return, final jump
+fun40318: # Func Name
+		move $v0, $zero			# Function Callee - make frame, make room for args, Initialize by setting $v0 zero before pushing
+		move $v0, $ra			# Function Callee - make frame, push ret address to stack
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		la $v0, s9			# VAR_EXP - Load variable value
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		addi $sp, $sp, 4			# POP1 - adjust stack pointer by register size to pt to top stack value
+		lw $v1, ($sp)			# POP1 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP1 - clear free space atop stack
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $ra, $v0			# Function - Return, pop return address to $ra
+		move $sp, $fp			# Function - Return, set stack pointer to frame ptr
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $fp, $v0			# Function - Return, Set $fp to prev frame ptr 4 after curr fp
+		sw $v1, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		jr $ra			# Function - Return, final jump
+fun54200: # Func Name
+		move $v0, $zero			# Function Callee - make frame, make room for args, Initialize by setting $v0 zero before pushing
+		move $v0, $ra			# Function Callee - make frame, push ret address to stack
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		la $v0, _stringConstant6			# VAR_EXP - Load variable value
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $a0, $v0			# PRINTSTRING pass address of string to be printed
+		li $v0, 4			# PRINTSTRING specify printstring as the syscall to perform
+		syscall			# PRINTSTRING perform syscall
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $ra, $v0			# Function - Return, pop return address to $ra
+		move $sp, $fp			# Function - Return, set stack pointer to frame ptr
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $fp, $v0			# Function - Return, Set $fp to prev frame ptr 4 after curr fp
+		jr $ra			# Function - Return, final jump
+fun45315: # Func Name
+		move $v0, $zero			# Function Callee - make frame, make room for args, Initialize by setting $v0 zero before pushing
+		move $v0, $ra			# Function Callee - make frame, push ret address to stack
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		la $v0, s2			# VAR_EXP - Load variable value
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		addi $sp, $sp, 4			# POP1 - adjust stack pointer by register size to pt to top stack value
+		lw $v1, ($sp)			# POP1 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP1 - clear free space atop stack
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $ra, $v0			# Function - Return, pop return address to $ra
+		move $sp, $fp			# Function - Return, set stack pointer to frame ptr
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $fp, $v0			# Function - Return, Set $fp to prev frame ptr 4 after curr fp
+		sw $v1, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		jr $ra			# Function - Return, final jump
+fun10820: # Func Name
+		move $v0, $zero			# Function Callee - make frame, make room for args, Initialize by setting $v0 zero before pushing
+		move $v0, $ra			# Function Callee - make frame, push ret address to stack
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		la $v0, s3			# VAR_EXP - Load variable value
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $a0, $v0			# PRINTSTRING pass address of string to be printed
+		li $v0, 4			# PRINTSTRING specify printstring as the syscall to perform
+		syscall			# PRINTSTRING perform syscall
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $ra, $v0			# Function - Return, pop return address to $ra
+		move $sp, $fp			# Function - Return, set stack pointer to frame ptr
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $fp, $v0			# Function - Return, Set $fp to prev frame ptr 4 after curr fp
+		jr $ra			# Function - Return, final jump
+fun55791: # Func Name
+		move $v0, $zero			# Function Callee - make frame, make room for args, Initialize by setting $v0 zero before pushing
+		move $v0, $ra			# Function Callee - make frame, push ret address to stack
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		la $v0, s9			# VAR_EXP - Load variable value
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		addi $sp, $sp, 4			# POP1 - adjust stack pointer by register size to pt to top stack value
+		lw $v1, ($sp)			# POP1 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP1 - clear free space atop stack
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $ra, $v0			# Function - Return, pop return address to $ra
+		move $sp, $fp			# Function - Return, set stack pointer to frame ptr
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $fp, $v0			# Function - Return, Set $fp to prev frame ptr 4 after curr fp
+		sw $v1, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		jr $ra			# Function - Return, final jump
+fun1921: # Func Name
+		move $v0, $zero			# Function Callee - make frame, make room for args, Initialize by setting $v0 zero before pushing
+		move $v0, $ra			# Function Callee - make frame, push ret address to stack
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		la $v0, _stringConstant7			# VAR_EXP - Load variable value
+		sw $v0, ($sp) 			# PUSH0 - store $v0 on top of stack
+		addi $at, $zero, 4			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		sub $sp, $sp, $at			# PUSH0 - adjust stack pointer by register size to pt to next unused position
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $a0, $v0			# PRINTSTRING pass address of string to be printed
+		li $v0, 4			# PRINTSTRING specify printstring as the syscall to perform
+		syscall			# PRINTSTRING perform syscall
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $ra, $v0			# Function - Return, pop return address to $ra
+		move $sp, $fp			# Function - Return, set stack pointer to frame ptr
+		addi $sp, $sp, 4			# POP0 - adjust stack pointer by register size to pt to top stack value
+		lw $v0, ($sp)			# POP0 - store $v0 on top of stack
+		sw $zero, ($sp)			# POP0 - clear free space atop stack
+		move $fp, $v0			# Function - Return, Set $fp to prev frame ptr 4 after curr fp
+		jr $ra			# Function - Return, final jump

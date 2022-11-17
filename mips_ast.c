@@ -34,6 +34,15 @@ void mips_astExpr(exp_node * e, S_table global_types, S_table function_rets, fra
 
 static void intrinsic(char * name, list * args, S_table global_types, S_table function_rets, frame * f) { // list of exp_node*
 
+/*
+    if (args != NULL) {
+        list *l = args;
+
+        while (l != NULL) {
+            mips_astExpr(l->head, global_types, function_rets, f);
+            l = l->next;
+        }
+    }*/
 
     if (!strcmp(name, "exit")) {
         // Push all args to stack
@@ -60,13 +69,20 @@ static void intrinsic(char * name, list * args, S_table global_types, S_table fu
     }
 
     if (!strcmp(name, "printstring")) {
-        // Push all args to stack
+
+        // Eval and push each arg
+        mips_astExpr(args->head, global_types, function_rets, f);
+        pop0();
+        // TODO: Already MIPS'd the arg, but trying to pass the argument (a function) as a string
+        // TODO: MIP ARGS BEFORE CALLING FUNC, PASS VALS INTO FUNCTION?
+            // That is for non-intrinsic, implement for intrinsic as is done in non-intrinsic?
         exp_node * strToPrint = (exp_node *) args->head;
         //strToPrint->data.sval;
         //emitInstruction("","PRINTSTRING Move string address to stack");
         // POP and pass to system call
         //pop0(); // Pop to $v0
-        emitInstruction("la $a0, %s", "PRINTSTRING pass address of string to be printed", strToPrint->data.sval);
+        // TODO: INVESTIGATE: ARG PASSED IN IS 'F', NAME OF FUNCTION, NOT NAME OF THE TRANSFORMED STRING
+        emitInstruction("move $a0, $v0", "PRINTSTRING pass address of string to be printed", strToPrint->data.sval);
         emitInstruction("li $v0, 4", "PRINTSTRING specify printstring as the syscall to perform");
         emitInstruction("syscall", "PRINTSTRING perform syscall");
         return;
@@ -87,7 +103,7 @@ void mips_astExpr(exp_node * e, S_table global_types, S_table function_rets, fra
             break;
         }
         case string_exp: {
-            //emitInstruction("la $v0, %s", "astExpr - string_exp: Load string address into v0", e->data.sval);
+            //emitInstruction("lw $v0, %s", "astExpr - string_exp: Load string address into v0", e->data.sval);
             //push0();
             break;
         }
@@ -304,7 +320,16 @@ void mips_astExpr(exp_node * e, S_table global_types, S_table function_rets, fra
             break;
         }
         case var_exp: {
-            emitInstruction("lw $v0, %s", "VAR_EXP - Load variable value", e->data.var_ops.name);
+
+            // Check if var is an int
+            if (!strcmp("int", typeToStr(S_look(global_types, S_Symbol(e->data.var_ops.name))))) {
+                emitInstruction("lw $v0, %s", "VAR_EXP - Load variable value", e->data.var_ops.name);
+            }
+            // Check if var is a string
+            else if (!strcmp("string",typeToStr(S_look(global_types, S_Symbol(e->data.var_ops.name))))) {
+                emitInstruction("la $v0, %s", "VAR_EXP - Load variable value", e->data.var_ops.name);
+            }
+            else {assert(0);}
             push0();
             break;
         }
@@ -399,27 +424,34 @@ void mips_astStmt(stmt_node * s, S_table global_types, S_table function_rets, fr
              */
             mips_astExpr(s->data.ret_exp, global_types, function_rets, f);
             // Check if void function
-            if (strcmp(typeToStr(f->ret), "void")){
-                // Pop ret val to $v1
-                pop1();
-            }
+            //if (f != NULL) {
+                if (f != NULL && strcmp(typeToStr(f->ret), "void")) {
+                    // Pop ret val to $v1
+                    pop1();
+                }
 
-            // Pop return address to $ra
-            pop0();
-            emitInstruction("move $ra, $v0", "Function - Return, pop return address to $ra");
-            // Set stack pointer to frame pointer
-            emitInstruction("move $sp, $fp", "Function - Return, set stack pointer to frame ptr");
+                // Pop return address to $ra
+                pop0();
+                emitInstruction("move $ra, $v0", "Function - Return, pop return address to $ra");
+                // Set stack pointer to frame pointer
+                emitInstruction("move $sp, $fp", "Function - Return, set stack pointer to frame ptr");
 
-            // Set frame pointer to the value loading 4 after frame pointer (address of prev frame pointer) lw $fp, 4($fp)
-            pop0(); // Get rid of callee frame pointer
-           // emitInstruction("lw $v0, -4($fp)", "Function - Return, Set $fp to prev frame ptr 4 after curr fp");
-            emitInstruction("move $fp, $v0", "Function - Return, Set $fp to prev frame ptr 4 after curr fp");
-            if (strcmp(typeToStr(f->ret), "void")) {
-                // push return value (v0/v1)
-                push1(); // put back onto stack now that frame is destroyed
-            }
-            // Jump back to caller
-            emitInstruction("jr $ra", "Function - Return, final jump");
+                // Set frame pointer to the value loading 4 after frame pointer (address of prev frame pointer) lw $fp, 4($fp)
+                pop0(); // Get rid of callee frame pointer
+                // emitInstruction("lw $v0, -4($fp)", "Function - Return, Set $fp to prev frame ptr 4 after curr fp");
+                emitInstruction("move $fp, $v0", "Function - Return, Set $fp to prev frame ptr 4 after curr fp");
+                if (f != NULL && strcmp(typeToStr(f->ret), "void")) {
+                    // push return value (v0/v1)
+                    push1(); // put back onto stack now that frame is destroyed
+                }
+                // Jump back to caller
+                emitInstruction("jr $ra", "Function - Return, final jump");
+            //}
+            // Else, it is a return from global scope
+            //else {
+                // Pop evaluation of return expression
+            //    pop0();
+            //}
             break;
         }
         case call_stmt: {
@@ -459,26 +491,27 @@ void mips_astStmt(stmt_node * s, S_table global_types, S_table function_rets, fr
              */
 
             // Push curr frame pointer
-            emitInstruction("move $v0, $fp", "Func Call \"%s\"- Make frame, load $fp to push curr frame pointer", s->data.call_ops.name);
+            emitInstruction("move $v0, $fp", "Func Call - Make frame, load $fp to push curr frame pointer", s->data.call_ops.name);
+            push0();
             // Eval and push each arg
             int numArgs = 0;
             list * l = s->data.call_ops.args;
             while(l != NULL) {
                 mips_astExpr(l->head, global_types, function_rets, f);
-                /*pop0();
-                push0();*/
+                // Note: leaving these on the stack automatically builds arguments
                 numArgs+=1;
                 l = l->next;
             }
+
+            // Move frame pointer to stack pointer
+            emitInstruction("move $fp, $sp", "Func Call - Make frame, move frame pointer to stack pointer");
+
             // adjust $fp based on current stack pointer and # args on the stack
-            emitInstruction("move $v0, $fp", "Func Call - Make frame, Adjust frame ptr to end of args");
-            emitInstruction("addi $v0, $v0, %d", "Func Call - Make frame, Adjust frame ptr to end of args", 4*(numArgs));
-            emitInstruction("move $fp, $v0", "Func Call - Make frame, Adjust frame ptr to end of args");
-            push0();
+            emitInstruction("add $fp, $fp, %d", "Func Call - Make frame, Adjust frame ptr to end of args", 4*(numArgs));
+            //push0();
 
             // jal to function
-            emitInstruction("jal %d", "Jump and link to callee function");
-
+            emitInstruction("jal %s", "Jump and link to callee function", s->data.call_ops.name);
             break;
         }
         case intrinsic_stmt: {
@@ -532,7 +565,6 @@ void mips_astVariables(list * l, S_table global_types, S_table function_rets, fr
 
 void mips_astFunction(fundec_node * fundec, S_table globals, S_table functions_rets, frame * f) {
     UNUSED(fundec);
-
     // Lec 18: Stack Frames - 1:01:45
     /* Stack pointer - End of current frame
      * Frame pointer - End of last frame
@@ -669,5 +701,8 @@ void mips_ast(program * p, S_table global_types, S_table function_rets, S_table 
     }
 
     mips_astStmts(p->statements, global_types, function_rets, NULL);
-    mips_astFunctions(p->functions, global_types, function_rets, frames);
+
+    if (p->functions != NULL) {
+        mips_astFunctions(p->functions, global_types, function_rets, frames);
+    }
 }
