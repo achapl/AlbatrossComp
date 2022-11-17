@@ -249,7 +249,29 @@ void mips_astExpr(exp_node * e, S_table global_types, S_table function_rets, fra
             break;
         }
         case call_exp: {
-            assert(0);
+            // Push curr frame pointer
+            emitInstruction("move $v0, $fp", "Func Call - Make frame, load $fp to push curr frame pointer", e->data.call_ops.name);
+            push0();
+            // Eval and push each arg
+            int numArgs = 0;
+            list * l = e->data.call_ops.args;
+            while(l != NULL) {
+                mips_astExpr(l->head, global_types, function_rets, f);
+                // Note: leaving these on the stack automatically builds arguments
+                numArgs+=1;
+                l = l->next;
+            }
+
+            // Move frame pointer to stack pointer
+            emitInstruction("move $fp, $sp", "Func Call - Make frame, move frame pointer to stack pointer");
+
+            // adjust $fp based on current stack pointer and # args on the stack
+            emitInstruction("add $fp, $fp, %d", "Func Call - Make frame, Adjust frame ptr to end of args", 4*(numArgs));
+            //push0();
+
+            // jal to function
+            emitInstruction("jal %s", "Jump and link to callee function", e->data.call_ops.name);
+
             break;
         }
         case unop_exp: {
@@ -347,18 +369,14 @@ void mips_astStmt(stmt_node * s, S_table global_types, S_table function_rets, fr
         }
         case while_stmt: {
             int whileJump = currJump;
-            printf("jump: %d\n", whileJump);
             emitLabel("WHILE_START%d", "WHILE - Start of while loop", whileJump);
             mips_astExpr(s->data.while_ops.cond, global_types, function_rets, f);
             pop0();
             emitInstruction("li $v1, 0", "WHILE_STMT - Get 1 (true) to compare to");
             emitInstruction("beq $v0, $v1, WHILE_END%d", "WHILE_STMT - Test condition", whileJump+1);
-            printf("AST WHILE INSIDE\n");
             mips_astStmts(s->data.while_ops.body, global_types, function_rets, f);
-            printf("AST WHILE INSIDE END\n");
             emitInstruction("j WHILE_START%d", "WHILE_STMT - Loop back to top of while loop", whileJump);
             emitLabel("WHILE_END%d", " WHILE_STMT - End of loop", whileJump+1);
-            printf("jump: %d\n", whileJump);
             currJump += 2; // Two labels used
 
             break;
@@ -367,9 +385,99 @@ void mips_astStmt(stmt_node * s, S_table global_types, S_table function_rets, fr
             assert(0);
         }
         case ret_stmt: {
-            assert(0);
+            /* Returning - Pop ret val into register v0 (v1 for temp?)
+             *      Pop return address to $ra
+             *      Set stack pointer to frame pointer
+             *      Set frame pointer to the value loading 4 after frame pointer (address of prev frame pointer) lw $fp, 4($fp)
+             *      push return value (v0/v1)
+             *      Jump back to caller
+             *      pop $v0
+             *      pop $ra
+             *      move $sp, $fp
+             *      lw $fp, 4($fp)
+             *      jr $ra
+             */
+            mips_astExpr(s->data.ret_exp, global_types, function_rets, f);
+            // Check if void function
+            if (strcmp(typeToStr(f->ret), "void")){
+                // Pop ret val to $v1
+                pop1();
+            }
+
+            // Pop return address to $ra
+            pop0();
+            emitInstruction("move $ra, $v0", "Function - Return, pop return address to $ra");
+            // Set stack pointer to frame pointer
+            emitInstruction("move $sp, $fp", "Function - Return, set stack pointer to frame ptr");
+
+            // Set frame pointer to the value loading 4 after frame pointer (address of prev frame pointer) lw $fp, 4($fp)
+            pop0(); // Get rid of callee frame pointer
+           // emitInstruction("lw $v0, -4($fp)", "Function - Return, Set $fp to prev frame ptr 4 after curr fp");
+            emitInstruction("move $fp, $v0", "Function - Return, Set $fp to prev frame ptr 4 after curr fp");
+            if (strcmp(typeToStr(f->ret), "void")) {
+                // push return value (v0/v1)
+                push1(); // put back onto stack now that frame is destroyed
+            }
+            // Jump back to caller
+            emitInstruction("jr $ra", "Function - Return, final jump");
+            break;
         }
         case call_stmt: {
+            // Lec 18: Stack Frames - 1:01:45
+            /* Stack pointer - End of current frame
+             * Frame pointer - End of last frame
+             * Creating - Caller-Side
+             *      Push curr frame-pointer
+             *      Eval and push each arg
+             *      adjust $fp based on current stack pointer and # args on the stack
+             *      jal to function
+             * Creating - Callee
+             *      Make room for local vars (right after args, but before $ra)
+             *      Initialize local vars
+             *      Push $ra (points to return in the source MIPS code)
+             * Returning - Pop ret val into register v0 (v1 for temp?)
+             *      Pop return address to $ra
+             *      Set stack pointer to frame pointer
+             *      Set frame pointer to the value loading 4 after frame pointer (address of prev frame pointer) lw $fp, 4($fp)
+             *      push return value (v0/v1)
+             *      Jump back to caller
+             *      pop $v0
+             *      pop $ra
+             *      move $sp, $fp
+             *      lw $fp, 4($fp)
+             *      jr $ra
+            */
+
+            /* ----------  Stack Frame Start
+             * - Prev Frame Pointer value/address-pointed-to
+             * - Args
+             * (step) Set new fp rel to stack pointer (n)*4 + $sp
+             * -$ra (pushed directly after jal instruction), return at end of function by popping stack pointer
+             * - Return val
+             * ----------  Stack Frame Start
+             * -$fp next push old frame pointer
+             */
+
+            // Push curr frame pointer
+            emitInstruction("move $v0, $fp", "Func Call \"%s\"- Make frame, load $fp to push curr frame pointer", s->data.call_ops.name);
+            // Eval and push each arg
+            int numArgs = 0;
+            list * l = s->data.call_ops.args;
+            while(l != NULL) {
+                mips_astExpr(l->head, global_types, function_rets, f);
+                /*pop0();
+                push0();*/
+                numArgs+=1;
+                l = l->next;
+            }
+            // adjust $fp based on current stack pointer and # args on the stack
+            emitInstruction("move $v0, $fp", "Func Call - Make frame, Adjust frame ptr to end of args");
+            emitInstruction("addi $v0, $v0, %d", "Func Call - Make frame, Adjust frame ptr to end of args", 4*(numArgs));
+            emitInstruction("move $fp, $v0", "Func Call - Make frame, Adjust frame ptr to end of args");
+            push0();
+
+            // jal to function
+            emitInstruction("jal %d", "Jump and link to callee function");
 
             break;
         }
@@ -424,6 +532,48 @@ void mips_astVariables(list * l, S_table global_types, S_table function_rets, fr
 
 void mips_astFunction(fundec_node * fundec, S_table globals, S_table functions_rets, frame * f) {
     UNUSED(fundec);
+
+    // Lec 18: Stack Frames - 1:01:45
+    /* Stack pointer - End of current frame
+     * Frame pointer - End of last frame
+     * Creating - Caller-Side
+     *      Push curr frame-pointer
+     *      Eval and push each arg
+     *      adjust $fp based on current stack pointer and # args on the stack
+     *      jal to function
+     * Creating - Callee
+     *      Make room for local vars (right after args, but before $ra)
+     *      Initialize local vars
+     *      Push $ra (points to return in the source MIPS code)
+     * Returning - Pop ret val into register v0 (v1 for temp?)
+     *      Pop return address to $ra
+     *      Set stack pointer to frame pointer
+     *      Set frame pointer to the value loading 4 after frame pointer (address of prev frame pointer) lw $fp, 4($fp)
+     *      push return value (v0/v1)
+     *      Jump back to caller
+     *      pop $v0
+     *      pop $ra
+     *      move $sp, $fp
+     *      lw $fp, 4($fp)
+     *      jr $ra
+    */
+
+    // Make room for local vars (right after args, but before $ra)
+
+    emitLabel("%s", "Func Name", fundec->name);
+    list * l = fundec->args;
+
+    emitInstruction("move $v0, $zero", "Function Callee - make frame, make room for args, Initialize by setting $v0 zero before pushing");
+    while(l != NULL) {
+        // Initialize local vars
+        push0();
+        l = l->next;
+    }
+
+    // Push $ra (points to return in the source MIPS code)
+    emitInstruction("move $v0, $ra", "Function Callee - make frame, push ret address to stack");
+    push0();
+
     mips_astStmts(fundec->stmts, globals, functions_rets, f);
 }
 
@@ -479,8 +629,10 @@ static void push0() {
 }
 
 static void push1() {
-    // Push register v1
-    assert(0);
+    emitInstruction("sw $v1, ($sp) ", "PUSH0 - store $v0 on top of stack");
+    // Substitution for : "subi $sp, $sp, 4"
+    emitInstruction("addi $at, $zero, 4", "PUSH0 - adjust stack pointer by register size to pt to next unused position");
+    emitInstruction("sub $sp, $sp, $at", "PUSH0 - adjust stack pointer by register size to pt to next unused position");
 }
 
 static void pop0() {
@@ -512,10 +664,10 @@ void mips_ast(program * p, S_table global_types, S_table function_rets, S_table 
     }
     mips_astVariables(p->variables, global_types, function_rets, NULL);
 
-    mips_astFunctions(p->functions, global_types, function_rets, frames);
     if (p->statements != NULL) {
         fprintf(out, ".text\n");
     }
-    // TODO: DEBUG FROM HERE
+
     mips_astStmts(p->statements, global_types, function_rets, NULL);
+    mips_astFunctions(p->functions, global_types, function_rets, frames);
 }

@@ -83,11 +83,9 @@ void transformStmts(list * l, S_table globals_types, S_table function_rets, fram
                 break;
             }
             case while_stmt: {
-                printf("Here1\n");
                 transformStmts(s->data.while_ops.otherwise, globals_types, function_rets, f);
                 transformStmts(s->data.while_ops.body, globals_types, function_rets, f);
                 if (s->data.while_ops.otherwise != NULL) {
-                    printf("Here2\n");
                     s->kind = if_stmt;
                     exp_node * cond = s->data.while_ops.cond;
                     list * body = s->data.while_ops.body;
@@ -95,9 +93,6 @@ void transformStmts(list * l, S_table globals_types, S_table function_rets, fram
                     s = IfNode(cond, ListAddLast(
                                                  WhileNode(cond, body, NULL),NULL),
                                             otherwise);
-                } else {
-                    printf("Here3\n");
-                    //transformStmts(s->data.while_ops.body, globals_types, function_rets, f);
                 }
                 break;
             }
