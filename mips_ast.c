@@ -110,11 +110,14 @@ void mips_astExpr(exp_node * e, S_table global_types, S_table function_rets, fra
         case binop_exp: {
             // Recursively evaluate each side of binary operation
             // Place result on the stack
-            mips_astExpr(e->data.bin_ops.e1, global_types, function_rets, f);
-            mips_astExpr(e->data.bin_ops.e2, global_types, function_rets, f);
-            // store values on stack from recursive call into a register;
-            pop1();
-            pop0();
+            if (e->data.bin_ops.op != and_op && e->data.bin_ops.op != or_op) {
+                mips_astExpr(e->data.bin_ops.e1, global_types, function_rets, f);
+
+                mips_astExpr(e->data.bin_ops.e2, global_types, function_rets, f);
+                // store values on stack from recursive call into a register;
+                pop1();
+                pop0();
+            }
 
             if (e->data.bin_ops.op == plus_op) {
                 // Add the registers that correspond to each operand
@@ -134,9 +137,16 @@ void mips_astExpr(exp_node * e, S_table global_types, S_table function_rets, fra
                 emitInstruction("and $v0, $v0, $v1","BINOP_EXP BAN_OP - And the two operands");
             } else if (e->data.bin_ops.op == xor_op) {
                 emitInstruction("xor $v0, $v0, $v1",    "BINOP_EXP XOR_OP - And the two operands");
-            } else if (e->data.bin_ops.op == or_op) {
+            }
+
+            if (e->data.bin_ops.op == or_op) {
+                mips_astExpr(e->data.bin_ops.e1, global_types, function_rets, f);
+                pop0();
                 // Only go into both branches if equal to 0, since only 0 AND 0 will result in a 0
                 emitInstruction("bne $v0, $zero, OR_TRUE%d",    "BINOP_EXP OR_OP - Check if $v1 is zero", currJump);
+                mips_astExpr(e->data.bin_ops.e2, global_types, function_rets, f);
+                // store values on stack from recursive call into a register;
+                pop1();
                 emitInstruction("bne $v1, $zero, OR_TRUE%d",    "BINOP_EXP OR_OP - Check if $v1 is zero", currJump);
                 emitInstruction("li $v0, 0", "BINOP_EXP OR_OP - Or is false, both 0's");
                 emitInstruction("j OR_END%d", "BINOP_EXP OR_OP - Done with or op", currJump + 1);
@@ -147,9 +157,14 @@ void mips_astExpr(exp_node * e, S_table global_types, S_table function_rets, fra
                 currJump += 2; // 2 labels used in this block
 
             } else if (e->data.bin_ops.op == and_op) {
+                mips_astExpr(e->data.bin_ops.e1, global_types, function_rets, f);
+                pop0();
                 // Only go into both branches if equal to 1, since only 1 AND 1 will result in a 1
-                emitInstruction("bne $v0, 1, AND_FALSE%d",    "BINOP_EXP AND_OP - Check if $v1 is zero", currJump);
-                emitInstruction("bne $v1, 1, AND_FALSE%d",    "BINOP_EXP AND_OP - Check if $v1 is zero", currJump);
+                emitInstruction("beq $v0, $zero, AND_FALSE%d",    "BINOP_EXP AND_OP - Check if $v1 is zero", currJump);
+                mips_astExpr(e->data.bin_ops.e2, global_types, function_rets, f);
+                // store values on stack from recursive call into a register;
+                pop1();
+                emitInstruction("beq $v1, $zero, AND_FALSE%d",    "BINOP_EXP AND_OP - Check if $v1 is zero", currJump);
                 emitInstruction("li $v0, 1", "BINOP_EXP AND_OP - And is true, both 1's");
                 emitInstruction("j AND_END%d", "BINOP_EXP AND_OP - Done with or op", currJump + 1);
                 emitLabel(          "AND_FALSE%d", "BINOP_EXP AND_OP - Jump here if OR op is true", currJump);
@@ -178,15 +193,15 @@ void mips_astExpr(exp_node * e, S_table global_types, S_table function_rets, fra
             else if (e->data.bin_ops.op == ne_op) {
                 // If ne_op evals to false, continue, and store 0 to $v0
                 // if true jump to EQ_OP_BNE and store 1 to $v0
-                emitInstruction("bne $v0, $v1, EQ_OP_BNE%d","BINOP_EXP EQ_OP - Branch if equal", currJump);
-                emitInstruction("li $v0, 0",                "BINOP_EXP EQ_OP - Store 0 for false comparison");
+                emitInstruction("bne $v0, $v1, NE_OP_TRUE%d","BINOP_EXP NE_OP - Branch if equal", currJump);
+                emitInstruction("li $v0, 0",                "BINOP_EXP NE_OP - Store 0 for false comparison");
                 // Once done wit this, jump over the "false" branch to EQ_OP_END
-                emitInstruction("j NE_OP_END%d",              "BINOP_EXP EQ_OP - Done with equal expression if it is false. Go to end", currJump+1);
+                emitInstruction("j NE_OP_END%d",              "BINOP_EXP NE_OP - Done with equal expression if it is false. Go to end", currJump+1);
 
                 // If false, jump here, and store 0 to $v0
-                emitLabel(          "EQ_OP_BNE%d",              "BINOP_EXP EQ_OP - Branch to here if not equal", currJump);
-                emitInstruction("li $v0, 1",            "BINOP_EXP EQ_OP - Store one for true comparison");
-                emitLabel(                "NE_OP_END%d",          "BINOP_EXP EQ_OP - End from all branches here", currJump+1);
+                emitLabel(          "NE_OP_TRUE%d",              "BINOP_EXP NE_OP - Branch to here if not equal", currJump);
+                emitInstruction("li $v0, 1",            "BINOP_EXP NE_OP - Store one for true comparison");
+                emitLabel(                "NE_OP_END%d",          "BINOP_EXP NE_OP - End from all branches here", currJump+1);
 
                 currJump += 2; // 2 labels used in this block
 
@@ -321,6 +336,33 @@ void mips_astExpr(exp_node * e, S_table global_types, S_table function_rets, fra
         }
         case var_exp: {
 
+            char * varName = e->data.var_ops.name;
+            S_symbol varSymb = S_Symbol(varName);
+            S_table locArgs;
+            if (f != NULL) {
+                locArgs = f->args_locs_types;
+            }
+            // Check if var is not global (Note, will never have a global scope with local vars, f != NULL stops segfaults later)
+            if (f != NULL && S_look(global_types, varSymb) == NULL) {
+                // Check var is local
+                if (S_look(locArgs, varSymb) != NULL) {
+                    long index = (long) S_look(f->indexes, S_Symbol(varName));
+
+                    // Check if var is an int
+                    if (!strcmp("int", typeToStr(S_look(locArgs, varSymb)))) {
+                        emitInstruction("lw $v0, %d($fp)", "VAR_EXP - Load variable value", -4*(index));
+                    }
+                        // Check if var is a string
+                    else if (!strcmp("string",typeToStr(S_look(locArgs, varSymb)))) {
+                        emitInstruction("lw $v0, %d($fp)", "VAR_EXP - Load variable value", -4*(index));
+                    }
+                    else {assert(0);}
+                    push0();
+                    break;
+
+                }
+                break;
+            }
             // Check if var is an int
             if (!strcmp("int", typeToStr(S_look(global_types, S_Symbol(e->data.var_ops.name))))) {
                 emitInstruction("lw $v0, %s", "VAR_EXP - Load variable value", e->data.var_ops.name);
