@@ -49,7 +49,7 @@ do
         fi
 
         T1=$(date +%s%N | cut -b1-13 | sed s/N/000/g)
-        $JAVA -Xmx1G -jar $MARS nc out.mips > $OUTPUT
+        $JAVA -Djava.awt.headless=true -Xmx1G -jar $MARS nc out.mips > $OUTPUT
         RET=$?
         T2=$(date +%s%N | cut -b1-13 | sed s/N/000/g)
         TT=$((T2-T1))
