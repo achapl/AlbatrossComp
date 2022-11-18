@@ -396,10 +396,23 @@ static char * generateFreshLabel() {
 
 void mips_astStmts(list * l, S_table globals, S_table function_rets, frame * f);
 
+char * kindToType(stmt_node* s) {
+    switch(s->kind) {
+        case assign_stmt: return "assign_stmt";
+        case if_stmt: return "if_stmt";
+        case while_stmt: return"while_stmt";
+        case repeat_stmt: return "repeat_stmt";
+        case call_stmt: return "call_stmt";
+        case intrinsic_stmt: return "intrinsic_stmt";
+        default: return "None";
+    }
+}
+
 void mips_astStmt(stmt_node * s, S_table global_types, S_table function_rets, frame * f) {
     UNUSED(global_types);
     UNUSED(function_rets);
     UNUSED(f);
+
     if(!s) return;
     switch(s->kind){
         case assign_stmt: {
@@ -735,6 +748,12 @@ void mips_ast(program * p, S_table global_types, S_table function_rets, S_table 
 
     if (p->variables != NULL) {
         fprintf(out, ".data\n");
+    }
+    list * t = p->variables;
+    while(t != NULL) {
+        vardec_node * statementNode = t->head;
+        UNUSED(statementNode);
+        t = t->next;
     }
     mips_astVariables(p->variables, global_types, function_rets, NULL);
 

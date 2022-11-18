@@ -66,7 +66,6 @@ int main(int argc, char **argv) {
  g2 = functions_ret_types;
  g3 = functions_frames;
 
-
  return ret;
 }
 

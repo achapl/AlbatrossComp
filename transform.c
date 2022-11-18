@@ -21,6 +21,15 @@ static char * generateFreshGlobalVar() {
     return strdup(buffer);
 }
 
+static char * generateFreshLoopVar() {
+    static int lastLoopVar = 0;
+    static char buffer[1024];
+
+    snprintf(buffer, sizeof(buffer), "_loopVar%d", lastLoopVar);
+    lastLoopVar += 1;
+    return strdup(buffer);
+}
+
 
 void transformExpr(exp_node * e, S_table global_types, S_table function_rets, frame * f) {
     UNUSED(global_types);
@@ -62,7 +71,7 @@ void transformExpr(exp_node * e, S_table global_types, S_table function_rets, fr
     }
 }
 
-void transformStmts(list * l, S_table globals_types, S_table function_rets, frame * f) {
+void transformStmts(list * l, S_table globals_types, S_table function_rets, frame * f, list ** pVariables) {
     UNUSED(globals_types);
     UNUSED(function_rets);
     UNUSED(f);
@@ -79,13 +88,13 @@ void transformStmts(list * l, S_table globals_types, S_table function_rets, fram
                 break;
             }
             case if_stmt: {
-                transformStmts(s->data.if_ops.then_stmts, globals_types, function_rets, f);
-                transformStmts(s->data.if_ops.else_stmts, globals_types, function_rets, f);
+                transformStmts(s->data.if_ops.then_stmts, globals_types, function_rets, f, pVariables);
+                transformStmts(s->data.if_ops.else_stmts, globals_types, function_rets, f, pVariables);
                 break;
             }
             case while_stmt: {
-                transformStmts(s->data.while_ops.otherwise, globals_types, function_rets, f);
-                transformStmts(s->data.while_ops.body, globals_types, function_rets, f);
+                transformStmts(s->data.while_ops.otherwise, globals_types, function_rets, f, pVariables);
+                transformStmts(s->data.while_ops.body, globals_types, function_rets, f, pVariables);
                 if (s->data.while_ops.otherwise != NULL) {
                     s->kind = if_stmt;
                     exp_node * cond = s->data.while_ops.cond;
@@ -102,6 +111,52 @@ void transformStmts(list * l, S_table globals_types, S_table function_rets, fram
                 break;
             }
             case repeat_stmt: {
+                transformExpr(s->data.repeat_ops.cond, globals_types, function_rets, f);
+                transformStmts(s->data.repeat_ops.body, globals_types, function_rets, f, pVariables);
+
+                list * next = l->next;
+
+
+                char * loopVarName = generateFreshLoopVar();
+
+                // var i int = 0;
+                *pVariables = ListAddLast(VarDecNode(loopVarName,IntTyNode(), IntNode(0)), *pVariables);
+                S_enter(globals_types, S_Symbol(loopVarName), IntTyNode());
+                list * t = *pVariables;
+                while(t != NULL) {
+                    vardec_node * statementNode = t->head;
+                    UNUSED(statementNode);
+                    t = t->next;
+                }
+
+                list * oldRepBody = s->data.repeat_ops.body;
+                exp_node  * oldRepCond = s->data.repeat_ops.cond;
+                // i = n;
+                s->kind = assign_stmt;
+                s->data.assign_ops.lhs = loopVarName;
+                s->data.assign_ops.rhs = oldRepCond;
+
+                // while() {i = i-1}
+                    exp_node * iNode      = VarOpNode(loopVarName);
+                    exp_node * int1Node   = IntNode(1);
+                    exp_node * subtr      = BinOpNode(minus_op, iNode, int1Node);
+                stmt_node * increment = AssignNode(loopVarName, subtr);
+
+                list * whileBody = ListAddLast(increment, NULL);
+                whileBody->next = NULL; // Make sure no garbage after the increment before joining so can iterate safely to tail
+                // Stmts
+                list * tail = whileBody;
+                while(tail != NULL && tail->next != NULL) {
+                    tail = tail->next;
+                }
+                assert(tail != NULL);
+                tail->next = oldRepBody;
+                // Create new list for l->next
+                list* newList = ListAddLast(RetNode(IntNode(999)),NULL);// RetNode is dummy for creating new list
+                l->next = newList;
+                l->next->head = WhileNode(BinOpNode(ne_op, VarOpNode(loopVarName), IntNode(0)),whileBody,NULL);
+                ((stmt_node *) (l->next->head))->kind = while_stmt;
+                l->next->next = next;
                 break;
             }
             case ret_stmt: {
@@ -150,12 +205,11 @@ void transformStmts(list * l, S_table globals_types, S_table function_rets, fram
                 break;
             }
             default:
-                printf("Stype: %d",s->kind);
                 assert(0);
         }
     }
 
-    transformStmts(l->next, globals_types, function_rets, f);
+    transformStmts(l->next, globals_types, function_rets, f, pVariables);
 }
 
 void transformVariable(vardec_node * node, S_table globals_types, S_table function_rets, frame * f, list ** glob_var_inits) {
@@ -172,9 +226,9 @@ void transformVariables(list * l, S_table global_types, S_table function_rets, f
     transformVariables(l->next, global_types, function_rets, f, glob_var_inits);
 }
 
-void transformFunction(fundec_node * fundec, S_table globals, S_table functions_rets, frame * f) {
+void transformFunction(fundec_node * fundec, S_table globals, S_table functions_rets, frame * f, list ** pVariables) {
     UNUSED(fundec);
-    transformStmts(fundec->stmts, globals, functions_rets, f);
+    transformStmts(fundec->stmts, globals, functions_rets, f, pVariables);
 
     // For void functions, add a return node
     if (!strcmp("void", typeToStr(fundec->type))){
@@ -196,12 +250,12 @@ void transformFunction(fundec_node * fundec, S_table globals, S_table functions_
     }
 }
 
-void transformFunctions(list * l, S_table global_types, S_table function_ret_types, S_table frames) {
+void transformFunctions(list * l, S_table global_types, S_table function_ret_types, S_table frames, list ** pVariables) {
     if (l == NULL) return;
     fundec_node * fundec = (fundec_node*) l->head;
     frame * f = S_look(frames, S_Symbol(fundec->name));
-    transformFunction(fundec, global_types, function_ret_types, f);
-    transformFunctions(l->next, global_types, function_ret_types, frames);
+    transformFunction(fundec, global_types, function_ret_types, f, pVariables);
+    transformFunctions(l->next, global_types, function_ret_types, frames, pVariables);
 }
 
 list * getLastElement(list * l) {
@@ -228,6 +282,17 @@ void transform(program * p, S_table global_types, S_table function_rets, S_table
             p->statements = glob_var_inits;
         }
     }
-    transformFunctions(p->functions, global_types, function_rets, frames);
-    transformStmts(p->statements, global_types, function_rets, NULL);
+    transformFunctions(p->functions, global_types, function_rets, frames, &p->variables);
+
+    //Check if last statement is a return 0, if not, add it
+    list * last = p->statements;
+    while(last != NULL && last->next != NULL) {
+        last = last->next;
+    }
+    stmt_node * s = last->head;
+    if (s->kind != ret_stmt) {
+        p->statements = ListAddLast(RetNode(0), p->statements);
+    }
+
+    transformStmts(p->statements, global_types, function_rets, NULL, &p->variables);
 }
