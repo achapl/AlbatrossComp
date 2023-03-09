@@ -8,7 +8,7 @@ void framesFunction(fundec_node * fundec, S_table globals, S_table functions_ret
     frame * f = S_look(frames, S_Symbol(fundec->name));
 
     long i = 0;
-    // TODO add each argument position to indexes
+    // Adds each argument position to indexes
     list * l = fundec->args;
     while (l != NULL) {
         param * p = (param*)l->head;
@@ -17,7 +17,7 @@ void framesFunction(fundec_node * fundec, S_table globals, S_table functions_ret
         l = l->next;
     }
 
-    // TODO add each local variable position to indexes
+    // Adds each local variable position to indexes
     l = fundec->locs;
     while (l != NULL) {
         vardec_node * v = (vardec_node*)l->head;
